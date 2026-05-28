@@ -1,0 +1,695 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model WaUser {
+  id        String   @id @default(cuid())
+  waId      String   @unique @map("wa_id")
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  session       ConversationSession?
+  optIns              NotificationOptIn[]
+  sportsAlertAtleticas SportsAlertAtletica[]
+  handoffMsgs     HandoffMessage[]
+  handoffClosures HandoffClosure[]
+  helpSessions  HelpSession[]
+  helpFeedbacks HelpFeedback[]
+
+  @@map("wa_users")
+}
+
+model ConversationSession {
+  id           String   @id @default(cuid())
+  waUserId     String   @unique @map("wa_user_id")
+  mode         String   @default("bot")
+  menuState    String   @default("root") @map("menu_state")
+  campusId     String?  @map("campus_id")
+  atleticaId   String?  @map("atletica_id")
+  assignedTo   String?  @map("assigned_to")
+  lastMessageAt DateTime @default(now()) @map("last_message_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  waUser WaUser @relation(fields: [waUserId], references: [id], onDelete: Cascade)
+
+  @@map("conversation_sessions")
+}
+
+model WebhookEvent {
+  id        String   @id
+  processed Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("webhook_events")
+}
+
+model Campus {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+
+  atleticas      Atletica[]
+  challenges     Challenge[]
+
+  @@map("campi")
+}
+
+model Atletica {
+  id        String   @id @default(cuid())
+  name      String
+  campusId  String   @map("campus_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  campus               Campus @relation(fields: [campusId], references: [id])
+  sportsAlertSubscriptions SportsAlertAtletica[]
+  standing             AtleticaStanding?
+  divisionAssignment       AtleticaDivision?
+  challengeDivisionAssignments AtleticaChallengeDivision[]
+  challenges               Challenge[]
+  accommodationLinks     AccommodationAtletica[]
+
+  @@map("atleticas")
+}
+
+model AtleticaStanding {
+  id           String   @id @default(cuid())
+  atleticaId   String   @unique @map("atletica_id")
+  points       Int      @default(0)
+  played       Int      @default(0)
+  wins         Int      @default(0)
+  draws        Int      @default(0)
+  losses       Int      @default(0)
+  goalsFor     Int      @default(0) @map("goals_for")
+  goalsAgainst Int      @default(0) @map("goals_against")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  atletica Atletica @relation(fields: [atleticaId], references: [id], onDelete: Cascade)
+
+  @@map("atletica_standings")
+}
+
+model SportsAlertAtletica {
+  waUserId   String   @map("wa_user_id")
+  atleticaId String   @map("atletica_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  waUser   WaUser   @relation(fields: [waUserId], references: [id], onDelete: Cascade)
+  atletica Atletica @relation(fields: [atleticaId], references: [id], onDelete: Cascade)
+
+  @@id([waUserId, atleticaId])
+  @@map("sports_alert_atleticas")
+}
+
+model Modalidade {
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  category         String   @default("collective")
+  gender           String   @default("male")
+  scoringMode      String   @default("versus") @map("scoring_mode")
+  bracketPublished Boolean  @default(false) @map("bracket_published")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  matches Match[]
+
+  @@map("modalidades")
+}
+
+model Venue {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  mapUrl    String?  @map("map_url")
+  latitude  Float?
+  longitude Float?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  matches       Match[]
+  coordinators              AdminUser[]
+  allowedEmails             AllowedEmail[]
+  coordinatorAuthorizations VenueCoordinatorAuthorization[]
+
+  @@map("venues")
+}
+
+model Match {
+  id             String    @id @default(cuid())
+  modalidadeId   String    @map("modalidade_id")
+  venueId        String?   @map("venue_id")
+  homeTeam       String?   @map("home_team")
+  awayTeam       String?   @map("away_team")
+  homeScore      Int       @default(0) @map("home_score")
+  awayScore      Int       @default(0) @map("away_score")
+  scheduledAt    DateTime  @map("scheduled_at")
+  status         String    @default("scheduled")
+  liveStartedAt  DateTime? @map("live_started_at")
+  gamePeriod     String?   @map("game_period")
+  bracketRound       String?   @map("bracket_round")
+  bracketInfo        String?   @map("bracket_info")
+  division           String?
+  pointsBase         Int       @default(10) @map("points_base")
+  homePointsAwarded  Int?      @map("home_points_awarded")
+  awayPointsAwarded  Int?      @map("away_points_awarded")
+  pointsWarning      Boolean   @default(false) @map("points_warning")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  modalidade     Modalidade           @relation(fields: [modalidadeId], references: [id])
+  venue          Venue?               @relation(fields: [venueId], references: [id])
+  participants   MatchParticipant[]
+  events         MatchEvent[]
+  incidents      MatchIncident[]
+  disciplines    MatchDiscipline[]
+  assignments    MatchAssignment[]
+  closureRequests MatchClosureRequest[]
+
+  @@map("matches")
+}
+
+model MatchDiscipline {
+  id          String   @id @default(cuid())
+  matchId     String   @map("match_id")
+  team        String
+  type        String
+  pointsDelta Int      @map("points_delta")
+  athleteName String?  @map("athlete_name")
+  minute      Int?
+  notes       String?
+  createdById String?  @map("created_by_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@map("match_disciplines")
+}
+
+model MatchParticipant {
+  id        String   @id @default(cuid())
+  matchId   String   @map("match_id")
+  team      String
+  placement Int?
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@unique([matchId, team])
+  @@map("match_participants")
+}
+
+model MatchIncident {
+  id             String    @id @default(cuid())
+  matchId        String    @unique @map("match_id")
+  type           String
+  description    String
+  athleteName    String?   @map("athlete_name")
+  team           String?
+  minute         Int?
+  actionTaken    String?   @map("action_taken")
+  reportedBy     String?   @map("reported_by")
+  gameStartedAt  DateTime? @map("game_started_at")
+  gameEndedAt    DateTime? @map("game_ended_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@map("match_incidents")
+}
+
+model MatchEvent {
+  id        String   @id @default(cuid())
+  matchId   String   @map("match_id")
+  type      String
+  team      String?
+  minute    Int?
+  note      String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@map("match_events")
+}
+
+model Location {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  mapUrl    String?  @map("map_url")
+  latitude  Float?
+  longitude Float?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  festivals Festival[]
+
+  @@map("locations")
+}
+
+model Festival {
+  id                  String   @id @default(cuid())
+  name                String   @default("Interunesp")
+  promoVideoUrl       String?  @map("promo_video_url")
+  promoImageUrl       String?  @map("promo_image_url")
+  address             String?  @map("tenda_address")
+  mapUrl              String?  @map("tenda_map_url")
+  passportPurchaseUrl String?  @map("passport_purchase_url")
+  locationId          String?  @map("tenda_location_id")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  location Location?       @relation(fields: [locationId], references: [id])
+  days     FestivalDay[]
+  media    FestivalMedia[]
+
+  @@map("festivals")
+}
+
+model FestivalDay {
+  id         String   @id @default(cuid())
+  festivalId String   @map("festival_id")
+  dayIndex   Int      @map("day_index")
+  title      String
+  startsAt   DateTime @map("starts_at")
+  endsAt     DateTime @map("ends_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  festival Festival         @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+  artists  FestivalArtist[]
+  media    FestivalMedia[]
+
+  @@unique([festivalId, dayIndex])
+  @@map("festival_days")
+}
+
+model FestivalArtist {
+  id            String    @id @default(cuid())
+  festivalDayId String    @map("festival_day_id")
+  name          String
+  role          String
+  sortOrder     Int       @default(0) @map("sort_order")
+  setStartsAt   DateTime? @map("set_starts_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  festivalDay FestivalDay    @relation(fields: [festivalDayId], references: [id], onDelete: Cascade)
+  media       FestivalMedia[]
+
+  @@map("festival_artists")
+}
+
+model FestivalMedia {
+  id               String   @id @default(cuid())
+  festivalId       String?  @map("festival_id")
+  festivalDayId    String?  @map("festival_day_id")
+  festivalArtistId String?  @map("festival_artist_id")
+  type             String
+  url              String
+  caption          String?
+  sortOrder        Int      @default(0) @map("sort_order")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  festival       Festival?       @relation(fields: [festivalId], references: [id], onDelete: Cascade)
+  festivalDay    FestivalDay?    @relation(fields: [festivalDayId], references: [id], onDelete: Cascade)
+  festivalArtist FestivalArtist? @relation(fields: [festivalArtistId], references: [id], onDelete: Cascade)
+
+  @@map("festival_media")
+}
+
+model NotificationOptIn {
+  id        String   @id @default(cuid())
+  waUserId  String   @map("wa_user_id")
+  segment   String   @default("general")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  waUser WaUser @relation(fields: [waUserId], references: [id])
+
+  @@unique([waUserId, segment])
+  @@map("notification_opt_ins")
+}
+
+model Segment {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  filters     Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  campaigns Campaign[]
+
+  @@map("segments")
+}
+
+model Campaign {
+  id           String   @id @default(cuid())
+  title        String
+  body         String
+  linkUrl      String?  @map("link_url")
+  mediaUrl     String?  @map("media_url")
+  mediaType    String?  @map("media_type")
+  segmentId    String?  @map("segment_id")
+  status       String   @default("draft")
+  templateName String?  @map("template_name")
+  sendToOptIn  Boolean  @default(true) @map("send_to_opt_in")
+  sentCount    Int      @default(0) @map("sent_count")
+  groupSentCount Int    @default(0) @map("group_sent_count")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  segment Segment? @relation(fields: [segmentId], references: [id])
+  groups  CampaignGroup[]
+
+  @@map("campaigns")
+}
+
+model CampaignGroup {
+  campaignId        String @map("campaign_id")
+  broadcastTargetId String @map("broadcast_target_id")
+
+  campaign        Campaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  broadcastTarget BroadcastTarget @relation(fields: [broadcastTargetId], references: [id], onDelete: Cascade)
+
+  @@id([campaignId, broadcastTargetId])
+  @@map("campaign_groups")
+}
+
+model HandoffMessage {
+  id        String   @id @default(cuid())
+  waUserId  String   @map("wa_user_id")
+  direction String
+  content   String
+  agentId   String?  @map("agent_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  waUser WaUser @relation(fields: [waUserId], references: [id])
+
+  @@map("handoff_messages")
+}
+
+model HandoffClosure {
+  id       String   @id @default(cuid())
+  waUserId String   @map("wa_user_id")
+  closedAt DateTime @default(now()) @map("closed_at")
+
+  waUser WaUser @relation(fields: [waUserId], references: [id], onDelete: Cascade)
+
+  @@index([waUserId, closedAt(sort: Desc)])
+  @@map("handoff_closures")
+}
+
+model InstagramMediaQueue {
+  id         String   @id @default(cuid())
+  mediaId    String   @unique @map("media_id")
+  mediaType  String   @map("media_type")
+  caption    String?
+  mediaUrl   String?  @map("media_url")
+  permalink  String?
+  status     String   @default("pending")
+  approvedBy String?  @map("approved_by")
+  sentAt     DateTime? @map("sent_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("instagram_media_queue")
+}
+
+model BroadcastTarget {
+  id           String    @id @default(cuid())
+  waId         String    @unique @map("wa_id")
+  label        String
+  type         String    @default("group")
+  active       Boolean   @default(true)
+  canSend      Boolean   @default(true) @map("can_send")
+  isRestricted Boolean   @default(false) @map("is_restricted")
+  participantCount Int?  @map("participant_count")
+  lastSyncedAt DateTime? @map("last_synced_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  campaigns CampaignGroup[]
+
+  @@map("broadcast_targets")
+}
+
+model AppConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("app_config")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String?  @map("password_hash")
+  name         String
+  role         String   @default("agent")
+  venueId      String?  @map("venue_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  venue                         Venue?                          @relation(fields: [venueId], references: [id])
+  matchAssignments              MatchAssignment[]               @relation("AssignedNeutral")
+  matchAssignmentsCreated       MatchAssignment[]               @relation("AssignmentCreator")
+  closureRequests               MatchClosureRequest[]           @relation("ClosureRequester")
+  closureReviews                MatchClosureRequest[]           @relation("ClosureReviewer")
+  allowedEmailsAdded            AllowedEmail[]                  @relation("AllowedEmailAddedBy")
+  coordinatorAuthorizations     VenueCoordinatorAuthorization[] @relation("AuthorizedCoordinator")
+  coordinatorAuthorizationsMade VenueCoordinatorAuthorization[] @relation("VenueAuthGrantor")
+
+  @@map("admin_users")
+}
+
+model VenueCoordinatorAuthorization {
+  id             String   @id @default(cuid())
+  coordinatorId  String   @map("coordinator_id")
+  venueId        String   @map("venue_id")
+  authorizedById String   @map("authorized_by_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  coordinator  AdminUser @relation("AuthorizedCoordinator", fields: [coordinatorId], references: [id], onDelete: Cascade)
+  venue        Venue     @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  authorizedBy AdminUser @relation("VenueAuthGrantor", fields: [authorizedById], references: [id])
+
+  @@unique([coordinatorId, venueId])
+  @@map("venue_coordinator_authorizations")
+}
+
+model AllowedEmail {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String
+  venueId   String?  @map("venue_id")
+  addedById String?  @map("added_by_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  venue   Venue?     @relation(fields: [venueId], references: [id])
+  addedBy AdminUser? @relation("AllowedEmailAddedBy", fields: [addedById], references: [id])
+
+  @@map("allowed_emails")
+}
+
+model MatchAssignment {
+  id           String   @id @default(cuid())
+  matchId      String   @map("match_id")
+  adminUserId  String   @map("admin_user_id")
+  assignedById String   @map("assigned_by_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  match      Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  adminUser  AdminUser @relation("AssignedNeutral", fields: [adminUserId], references: [id], onDelete: Cascade)
+  assignedBy AdminUser @relation("AssignmentCreator", fields: [assignedById], references: [id])
+
+  @@unique([matchId, adminUserId])
+  @@map("match_assignments")
+}
+
+model MatchClosureRequest {
+  id            String    @id @default(cuid())
+  matchId       String    @map("match_id")
+  requestedById String    @map("requested_by_id")
+  status        String    @default("pending")
+  homeScore     Int       @map("home_score")
+  awayScore     Int       @map("away_score")
+  reviewedById  String?   @map("reviewed_by_id")
+  reviewedAt    DateTime? @map("reviewed_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  match       Match      @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  requestedBy AdminUser  @relation("ClosureRequester", fields: [requestedById], references: [id])
+  reviewedBy  AdminUser? @relation("ClosureReviewer", fields: [reviewedById], references: [id])
+
+  @@map("match_closure_requests")
+}
+
+model KnowledgeArticle {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  tags      String   @default("")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("knowledge_articles")
+}
+
+model HelpSession {
+  id        String    @id @default(cuid())
+  waUserId  String    @map("wa_user_id")
+  status    String    @default("active")
+  history   Json      @default("[]")
+  createdAt DateTime  @default(now()) @map("created_at")
+  closedAt  DateTime? @map("closed_at")
+
+  waUser   WaUser        @relation(fields: [waUserId], references: [id], onDelete: Cascade)
+  feedback HelpFeedback?
+
+  @@map("help_sessions")
+}
+
+model HelpFeedback {
+  id            String   @id @default(cuid())
+  helpSessionId String   @unique @map("help_session_id")
+  waUserId      String   @map("wa_user_id")
+  resolved      Boolean?
+  suggestion    String?
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  helpSession HelpSession @relation(fields: [helpSessionId], references: [id], onDelete: Cascade)
+  waUser      WaUser      @relation(fields: [waUserId], references: [id], onDelete: Cascade)
+
+  @@map("help_feedbacks")
+}
+
+model InterEdition {
+  id                  String    @id @default("current")
+  status              String    @default("active")
+  currentGameDayIndex Int       @default(1) @map("current_game_day_index")
+  startsAt            DateTime? @map("starts_at")
+  endsAt              DateTime? @map("ends_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  gameDays InterGameDay[]
+
+  @@map("inter_editions")
+}
+
+model InterGameDay {
+  id        String    @id @default(cuid())
+  editionId String    @default("current") @map("edition_id")
+  dayIndex  Int       @map("day_index")
+  label     String
+  startsAt  DateTime  @map("starts_at")
+  endsAt    DateTime  @map("ends_at")
+  closedAt  DateTime? @map("closed_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  edition InterEdition @relation(fields: [editionId], references: [id], onDelete: Cascade)
+
+  @@unique([editionId, dayIndex])
+  @@map("inter_game_days")
+}
+
+model AtleticaDivision {
+  id         String   @id @default(cuid())
+  atleticaId String   @unique @map("atletica_id")
+  division   String
+  source     String   @default("seed")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  atletica Atletica @relation(fields: [atleticaId], references: [id], onDelete: Cascade)
+
+  @@map("atletica_divisions")
+}
+
+model Accommodation {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  mapUrl    String?  @map("map_url")
+  latitude  Float?
+  longitude Float?
+  notes     String?
+  imageUrls String[] @default([]) @map("image_urls")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  atleticas AccommodationAtletica[]
+
+  @@map("accommodations")
+}
+
+model AccommodationAtletica {
+  accommodationId String @map("accommodation_id")
+  atleticaId      String @map("atletica_id")
+
+  accommodation Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Cascade)
+  atletica      Atletica      @relation(fields: [atleticaId], references: [id], onDelete: Cascade)
+
+  @@id([accommodationId, atleticaId])
+  @@map("accommodation_atleticas")
+}
+
+model LocalGuidePlace {
+  id          String   @id @default(cuid())
+  type        String
+  name        String
+  address     String
+  latitude    Float?
+  longitude   Float?
+  phone       String?
+  siteUrl     String?  @map("site_url")
+  menuUrl     String?  @map("menu_url")
+  imageUrls   String[] @default([]) @map("image_urls")
+  status      String   @default("pending")
+  submittedBy String?  @map("submitted_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([type, status])
+  @@map("local_guide_places")
+}
+
+model AtleticaChallengeDivision {
+  id            String   @id @default(cuid())
+  atleticaId    String   @map("atletica_id")
+  challengeType String   @map("challenge_type")
+  division      String
+  source        String   @default("seed")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  atletica Atletica @relation(fields: [atleticaId], references: [id], onDelete: Cascade)
+
+  @@unique([atleticaId, challengeType])
+  @@map("atletica_challenge_divisions")
+}
+
+model Challenge {
+  id            String    @id @default(cuid())
+  title         String
+  challengeType String?   @unique @map("challenge_type")
+  atleticaId    String?   @map("atletica_id")
+  campusId      String?   @map("campus_id")
+  scheduledAt   DateTime  @map("scheduled_at")
+  locationName  String    @map("location_name")
+  address       String?
+  mapUrl        String?   @map("map_url")
+  description   String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  atletica Atletica? @relation(fields: [atleticaId], references: [id])
+  campus   Campus?   @relation(fields: [campusId], references: [id])
+
+  @@map("challenges")
+}

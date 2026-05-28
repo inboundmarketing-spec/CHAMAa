@@ -1,0 +1,18 @@
+{
+  "_comment": "E-mails autorizados para primeiro acesso. Edite as listas abaixo antes do evento.",
+  "mesa": [
+    "mesa@interunesp.local"
+  ],
+  "diretor": [],
+  "co_praca": [
+    {
+      "email": "copraca@interunesp.local",
+      "name": "C.O. Praça — Ginásio",
+      "venueId": "seed-venue-ginasio"
+    }
+  ],
+  "neutro": [
+    "neutro@interunesp.local"
+  ],
+  "criativa": []
+}

@@ -381,6 +381,23 @@ a.card-stat-link:hover {
   margin-top: 0.85rem;
   padding: 0.85rem 1.1rem;
   border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboard-standings-block + .dashboard-standings-block {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.dashboard-standings-division {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .live-match-clock {

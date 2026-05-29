@@ -26,9 +26,9 @@ export class HelpFlowService {
     await this.session.setMenuState(waUserId, BotMenuState.HELP_ACTIVE);
     await this.whatsapp.sendReplyButtons(
       waId,
-      '🔥 *Oi! Sou a chaminha*\n\n' +
+      '💬 *Ajuda*\n\n' +
         'Escreva sua dúvida sobre o *Interunesp* — jogos, festas, horários…\n\n' +
-        '_Interpreta sua pergunta e responde com base nas informações do Inter. Toque em *Encerrar* para sair._',
+        '_Respondo com base nas informações do evento. Toque em *Encerrar* quando terminar._',
       [
         { id: BOT_BUTTON_IDS.HELP_DONE, title: '✅ Encerrar' },
         { id: BOT_BUTTON_IDS.BACK, title: '🏠 Menu' },

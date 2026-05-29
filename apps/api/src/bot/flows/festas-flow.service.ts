@@ -26,31 +26,52 @@ export class FestasFlowService {
     const festival = await this.getFestival();
     const festaName = festival?.name?.trim() || 'Festas do Inter';
 
-    const mainButtons = [
-      { id: BOT_BUTTON_IDS.FESTAS_TODAY, title: '📅 Hoje' },
-      { id: BOT_BUTTON_IDS.FESTAS_LINEUP, title: '🎤 Os 3 dias' },
-      { id: BOT_BUTTON_IDS.FESTAS_TENDA, title: '📍 Local' },
-    ];
-
-    await this.whatsapp.sendReplyButtons(
-      waId,
-      `🎉 *${festaName}*\n\nCada dia dura cerca de *12 horas*. Escolha:`,
-      mainButtons,
-    );
-
-    const extraButtons: { id: string; title: string }[] = [
-      { id: BOT_BUTTON_IDS.FESTAS_NEARBY, title: '📍 Serviços perto' },
-      { id: BOT_BUTTON_IDS.FESTAS_PROMO, title: '🎬 Vídeo promo' },
+    const rows: { id: string; title: string; description?: string }[] = [
+      {
+        id: BOT_BUTTON_IDS.FESTAS_TODAY,
+        title: '📅 Hoje',
+        description: 'Programação do dia',
+      },
+      {
+        id: BOT_BUTTON_IDS.FESTAS_LINEUP,
+        title: '🎤 Os 3 dias',
+        description: 'Visão geral',
+      },
+      {
+        id: BOT_BUTTON_IDS.FESTAS_TENDA,
+        title: '📍 Local',
+        description: 'Onde é a festa',
+      },
+      {
+        id: BOT_BUTTON_IDS.FESTAS_NEARBY,
+        title: '📍 Serviços perto',
+        description: 'Marmita, farmácia…',
+      },
+      {
+        id: BOT_BUTTON_IDS.FESTAS_PROMO,
+        title: '🎬 Vídeo promo',
+        description: 'Assista no celular',
+      },
     ];
     if (festival?.passportPurchaseUrl?.trim()) {
-      extraButtons.unshift({
+      rows.splice(3, 0, {
         id: BOT_BUTTON_IDS.FESTAS_PASSPORT,
         title: '🎫 Passaporte',
+        description: 'Comprar ingresso',
       });
     }
-    extraButtons.push({ id: BOT_BUTTON_IDS.BACK, title: '🏠 Menu' });
+    rows.push({
+      id: BOT_BUTTON_IDS.BACK,
+      title: '🏠 Menu principal',
+      description: 'Voltar',
+    });
 
-    await this.whatsapp.sendReplyButtons(waId, ' ', extraButtons);
+    await this.whatsapp.sendList(
+      waId,
+      `🎉 *${festaName}*\n\nCada dia dura cerca de *12 horas*. Escolha:`,
+      'Ver opções',
+      [{ title: 'Festas', rows }],
+    );
   }
 
   async sendTodaySchedule(waId: string, waUserId: string) {
@@ -202,9 +223,22 @@ export class FestasFlowService {
       body: lines.join('\n'),
     });
 
-    await this.whatsapp.sendReplyButtons(waId, ' ', [
-      { id: BOT_BUTTON_IDS.FESTAS_NEARBY, title: '📍 Serviços perto' },
-      { id: BOT_BUTTON_IDS.BACK, title: '🏠 Menu' },
+    await this.whatsapp.sendList(waId, 'Mais opções:', 'Ver opções', [
+      {
+        title: 'Festas',
+        rows: [
+          {
+            id: BOT_BUTTON_IDS.FESTAS_NEARBY,
+            title: '📍 Serviços perto',
+            description: 'Do local da festa',
+          },
+          {
+            id: BOT_BUTTON_IDS.BACK,
+            title: '🏠 Menu principal',
+            description: 'Voltar',
+          },
+        ],
+      },
     ]);
   }
 
@@ -231,13 +265,36 @@ export class FestasFlowService {
       return;
     }
 
-    await this.whatsapp.sendReplyButtons(
+    await this.whatsapp.sendList(
       waId,
-      'Serviços perto da festa — escolha:',
+      'Serviços perto da festa:',
+      'Ver opções',
       [
-        { id: 'festa_near_marmita', title: '🍱 Marmita' },
-        { id: 'festa_near_pharmacy', title: '💊 Farmácia' },
-        { id: 'festa_near_fast', title: '🍔 Fast Food' },
+        {
+          title: 'Perto da festa',
+          rows: [
+            {
+              id: 'festa_near_marmita',
+              title: '🍱 Marmita',
+              description: LOCAL_GUIDE_TYPE_LABELS[LocalGuidePlaceType.MARMITA],
+            },
+            {
+              id: 'festa_near_pharmacy',
+              title: '💊 Farmácia',
+              description: LOCAL_GUIDE_TYPE_LABELS[LocalGuidePlaceType.PHARMACY],
+            },
+            {
+              id: 'festa_near_fast',
+              title: '🍔 Fast food',
+              description: LOCAL_GUIDE_TYPE_LABELS[LocalGuidePlaceType.FAST_FOOD],
+            },
+            {
+              id: BOT_BUTTON_IDS.BACK,
+              title: '🏠 Menu principal',
+              description: 'Voltar',
+            },
+          ],
+        },
       ],
     );
   }

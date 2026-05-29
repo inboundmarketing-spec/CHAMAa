@@ -33,20 +33,48 @@ export class SportsFlowService {
 
   async showSportsMenu(waId: string, waUserId: string) {
     await this.session.setMenuState(waUserId, BotMenuState.SPORTS);
-    await this.whatsapp.sendReplyButtons(
+    await this.whatsapp.sendList(
       waId,
       '⚽ *Esportes*\nO que você quer consultar?',
+      'Ver opções',
       [
-        { id: BOT_BUTTON_IDS.LIVE_SCORE, title: '📊 Placar ao vivo' },
-        { id: BOT_BUTTON_IDS.UPCOMING, title: '📅 Próximos jogos' },
-        { id: BOT_BUTTON_IDS.STANDINGS, title: '📋 Classificação' },
+        {
+          title: 'Esportes',
+          rows: [
+            {
+              id: BOT_BUTTON_IDS.LIVE_SCORE,
+              title: '📊 Placar ao vivo',
+              description: 'Jogos em andamento',
+            },
+            {
+              id: BOT_BUTTON_IDS.UPCOMING,
+              title: '📅 Próximos jogos',
+              description: 'Agenda',
+            },
+            {
+              id: BOT_BUTTON_IDS.STANDINGS,
+              title: '📋 Classificação',
+              description: '1ª e 2ª divisão',
+            },
+            {
+              id: BOT_BUTTON_IDS.BRACKET,
+              title: '🏆 Chaveamento',
+              description: 'Por modalidade',
+            },
+            {
+              id: BOT_BUTTON_IDS.SPORTS_VENUES,
+              title: '🏟 Praças',
+              description: 'Locais dos jogos',
+            },
+            {
+              id: BOT_BUTTON_IDS.BACK,
+              title: '🏠 Menu principal',
+              description: 'Voltar',
+            },
+          ],
+        },
       ],
     );
-    await this.whatsapp.sendReplyButtons(waId, 'Mais:', [
-      { id: BOT_BUTTON_IDS.BRACKET, title: '🏆 Chaveamento' },
-      { id: BOT_BUTTON_IDS.SPORTS_VENUES, title: '🏟 Praças' },
-      { id: BOT_BUTTON_IDS.BACK, title: '🏠 Menu' },
-    ]);
   }
 
   async sendLiveScores(waId: string, waUserId: string) {

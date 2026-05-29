@@ -27,7 +27,7 @@ const PREFIX_PATTERNS: RegExp[] = [
 ];
 
 const ROOT_COMMAND_WORDS =
-  /^(ajuda|menu|esportes|festas|avisos|voltar|sos|lieu)$/i;
+  /^(ajuda|menu|esportes|festas|avisos|atlética|atletica|alojamento|alojamentos|desafios|voltar|sos|lieu)$/i;
 
 export function matchesActivationPrefix(text: string): boolean {
   const trimmed = text.trim();
@@ -51,6 +51,13 @@ export function isBotButtonOrCommand(input: string): boolean {
     return true;
   }
   if (text.startsWith(ALERT_ATLETICA_TOGGLE_PREFIX) || text.startsWith('alert_atl_page_')) {
+    return true;
+  }
+  if (
+    text.startsWith('challenge_') ||
+    text.startsWith('acc_') ||
+    text.startsWith('atletica_')
+  ) {
     return true;
   }
   return false;
@@ -83,10 +90,13 @@ export function evaluateActivation(params: {
 
   if (wakingUp) {
     if (!text) return { action: 'ignore', routeAfterWelcome: false };
-    return {
-      action: 'welcome',
-      routeAfterWelcome: hasPrefix || hasCommand,
-    };
+    if (hasCommand) {
+      return { action: 'route', routeAfterWelcome: false };
+    }
+    if (hasPrefix) {
+      return { action: 'welcome', routeAfterWelcome: false };
+    }
+    return { action: 'welcome', routeAfterWelcome: true };
   }
 
   if (hasPrefix || hasCommand) {

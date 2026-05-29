@@ -14,8 +14,17 @@ import { ChallengesFlowService } from './flows/challenges-flow.service';
 import { AccommodationFlowService } from './flows/accommodation-flow.service';
 import { SessionService } from './session.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { isBotButtonOrCommand } from './bot-activation.util';
 
 const GREETINGS = ['oi', 'olá', 'ola', 'hey', 'hi', 'menu', 'inicio', 'início'];
+
+/** Evita falso positivo (ex.: `btn_atletica_menu` contém "oi"). */
+function matchesGreeting(normalized: string): boolean {
+  return GREETINGS.some((g) => {
+    if (g === 'oi') return /\boi\b/.test(normalized);
+    return normalized.includes(g);
+  });
+}
 
 function buildWelcomeMenuBody(firstName?: string | null): string {
   const first = firstName?.trim().split(/\s+/)[0];
@@ -122,7 +131,10 @@ export class FlowRouterService {
       return this.help.handle(waId, waUserId, input, menuState);
     }
 
-    if (GREETINGS.some((g) => normalized.includes(g))) {
+    if (
+      !isBotButtonOrCommand(input) &&
+      matchesGreeting(normalized)
+    ) {
       return this.showRootMenu(waId, waUserId);
     }
 
@@ -237,6 +249,13 @@ export class FlowRouterService {
       return this.festas.handleText(waId, waUserId, input);
     }
 
+    if (
+      menuState.startsWith('challenges') ||
+      input.startsWith('challenge_')
+    ) {
+      return this.challenges.handleText(waId, waUserId, input);
+    }
+
     if (/ajuda|duvida|dúvida|pergunta|help/.test(normalized)) {
       return this.help.startHelp(waId, waUserId);
     }
@@ -244,26 +263,54 @@ export class FlowRouterService {
     const keyword = this.matchKeyword(normalized);
     if (keyword === 'sports') return this.sports.showSportsMenu(waId, waUserId);
     if (keyword === 'festas') return this.festas.showFestasMenu(waId, waUserId);
+    if (keyword === 'atletica') {
+      return this.atletica.showAtleticaPrompt(waId, waUserId);
+    }
+    if (keyword === 'accommodation') {
+      return this.accommodation.showCampusPrompt(waId, waUserId);
+    }
+    if (keyword === 'challenges') {
+      return this.challenges.showChallenges(waId, waUserId);
+    }
+    if (keyword === 'alerts') return this.alerts.showAlertsMenu(waId, waUserId);
 
     if (menuState === BotMenuState.ROOT) {
-      return;
+      return this.showRootMenu(waId, waUserId);
     }
 
-    await this.whatsapp.sendReplyButtons(
-      waId,
-      'Não entendi. Escolha uma opção:',
-      [
-        { id: BOT_BUTTON_IDS.SPORTS, title: '⚽ Esportes' },
-        { id: BOT_BUTTON_IDS.HELP, title: '💬 Ajuda' },
-        { id: BOT_BUTTON_IDS.BACK, title: '🏠 Menu' },
-      ],
-    );
+    await this.whatsapp.sendList(waId, 'Não entendi. Escolha uma opção:', 'Ver opções', [
+      {
+        title: 'Atalhos',
+        rows: [
+          {
+            id: BOT_BUTTON_IDS.SPORTS,
+            title: '⚽ Esportes',
+            description: 'Placar e jogos',
+          },
+          {
+            id: BOT_BUTTON_IDS.HELP,
+            title: '💬 Ajuda',
+            description: 'Tirar dúvidas',
+          },
+          {
+            id: BOT_BUTTON_IDS.BACK,
+            title: '🏠 Menu principal',
+            description: 'Início',
+          },
+        ],
+      },
+    ]);
   }
 
   private matchKeyword(text: string): string | null {
-    if (/jogo|placar|futsal|vôlei|volei|basquete|ginásio|ginasio/.test(text))
+    if (/jogo|placar|futsal|vôlei|volei|basquete|ginásio|ginasio/.test(text)) {
       return 'sports';
+    }
     if (/tenda|festa|show|lineup|dj|headliner/.test(text)) return 'festas';
+    if (/atlética|atletica/.test(text)) return 'atletica';
+    if (/alojamento|hospedagem|onde ficar/.test(text)) return 'accommodation';
+    if (/desafio/.test(text)) return 'challenges';
+    if (/aviso|alerta|notifica/.test(text)) return 'alerts';
     return null;
   }
 

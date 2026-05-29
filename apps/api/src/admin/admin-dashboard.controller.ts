@@ -52,14 +52,18 @@ export class AdminDashboardController {
     };
   }
 
-  private async topStandings(limit: number) {
-    const rows = await this.standings.list();
-    return rows.slice(0, limit).map((r) => ({
-      position: r.position,
-      team: r.team,
-      points: r.points,
-      played: r.played,
-    }));
+  private async topStandings(limitPerDivision: number) {
+    const { first, second } = await this.standings.listByDivisions();
+    const pick = (rows: typeof first) =>
+      rows.slice(0, limitPerDivision).map((r) => ({
+        position: r.position,
+        team: r.team,
+        points: r.points,
+      }));
+    return {
+      first: pick(first),
+      second: pick(second),
+    };
   }
 
   private async buildCards(user: AdminRequestUser): Promise<DashboardCard[]> {

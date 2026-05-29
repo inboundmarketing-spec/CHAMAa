@@ -11,6 +11,7 @@ import {
   kpiIconForLabel,
 } from '@/components/icons/DashboardKpiIcon';
 import { ChaminhaPageAccent } from '@/components/chaminha/ChaminhaPageAccent';
+import { AtleticaDivisionTier, divisionTierLabel } from '@chama/shared';
 
 type DashboardCard = {
   label: string;
@@ -22,15 +23,42 @@ type TopStanding = {
   position: number;
   team: string;
   points: number;
-  played: number;
 };
 
 type DashboardData = {
   role: string;
   roleLabel: string;
   cards: DashboardCard[];
-  topStandings: TopStanding[];
+  topStandings: {
+    first: TopStanding[];
+    second: TopStanding[];
+  };
 };
+
+function StandingsPreview({
+  title,
+  rows,
+}: {
+  title: string;
+  rows: TopStanding[];
+}) {
+  if (rows.length === 0) return null;
+  return (
+    <div className="dashboard-standings-block">
+      <h3 className="dashboard-standings-division">{title}</h3>
+      <ol className="dashboard-standings-preview">
+        {rows.map((row) => (
+          <li key={row.team} className="dashboard-standings-row">
+            <span className="dashboard-standings-pos">{row.position}º</span>
+            <AtleticaLogo name={row.team} size={32} />
+            <span className="dashboard-standings-team">{row.team}</span>
+            <span className="dashboard-standings-pts">{row.points} pts</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
 function DashboardKpiCard({ item }: { item: DashboardCard }) {
   const highlight = item.value > 0;
@@ -113,7 +141,8 @@ export default function DashboardPage() {
         </section>
       )}
 
-      {data.topStandings.length > 0 && (
+      {(data.topStandings.first.length > 0 ||
+        data.topStandings.second.length > 0) && (
         <section className="dashboard-standings-section">
           <div className="dashboard-section-head">
             <h2>Classificação</h2>
@@ -122,18 +151,14 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="card dashboard-standings-card">
-            <ol className="dashboard-standings-preview">
-              {data.topStandings.map((row) => (
-                <li key={row.team} className="dashboard-standings-row">
-                  <span className="dashboard-standings-pos">{row.position}º</span>
-                  <AtleticaLogo name={row.team} size={32} />
-                  <span className="dashboard-standings-team">{row.team}</span>
-                  <span className="dashboard-standings-pts">
-                    {row.points} pts · {row.played} J
-                  </span>
-                </li>
-              ))}
-            </ol>
+            <StandingsPreview
+              title={divisionTierLabel(AtleticaDivisionTier.FIRST)}
+              rows={data.topStandings.first}
+            />
+            <StandingsPreview
+              title={divisionTierLabel(AtleticaDivisionTier.SECOND)}
+              rows={data.topStandings.second}
+            />
           </div>
         </section>
       )}

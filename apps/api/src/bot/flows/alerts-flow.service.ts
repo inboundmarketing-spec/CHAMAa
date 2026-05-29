@@ -48,13 +48,32 @@ export class AlertsFlowService {
         'Ao ativar avisos gerais, você concorda em receber mensagens oficiais conforme a LGPD.',
     });
 
-    await this.whatsapp.sendReplyButtons(waId, 'O que deseja fazer?', [
-      { id: BOT_BUTTON_IDS.OPT_IN_YES, title: '✅ Ativar gerais' },
-      { id: BOT_BUTTON_IDS.OPT_IN_NO, title: '🔕 Desativar gerais' },
-      { id: BOT_BUTTON_IDS.ALERTS_ATLETICAS, title: '⚽ Atléticas' },
-    ]);
-    await this.whatsapp.sendReplyButtons(waId, ' ', [
-      { id: BOT_BUTTON_IDS.BACK, title: '🏠 Menu' },
+    await this.whatsapp.sendList(waId, 'O que deseja fazer?', 'Ver opções', [
+      {
+        title: 'Avisos',
+        rows: [
+          {
+            id: BOT_BUTTON_IDS.OPT_IN_YES,
+            title: '✅ Ativar gerais',
+            description: 'Campanhas e comunicados',
+          },
+          {
+            id: BOT_BUTTON_IDS.OPT_IN_NO,
+            title: '🔕 Desativar gerais',
+            description: 'Só alertas esportivos',
+          },
+          {
+            id: BOT_BUTTON_IDS.ALERTS_ATLETICAS,
+            title: '⚽ Atléticas',
+            description: 'Jogos por campus',
+          },
+          {
+            id: BOT_BUTTON_IDS.BACK,
+            title: '🏠 Menu principal',
+            description: 'Voltar',
+          },
+        ],
+      },
     ]);
   }
 
@@ -137,6 +156,19 @@ export class AlertsFlowService {
         title: '▶ Ver mais atléticas',
         description: `${atleticas.length - start - pageSize} restantes`,
       });
+    } else {
+      rows.push(
+        {
+          id: BOT_BUTTON_IDS.ALERTS,
+          title: '🔔 Voltar avisos',
+          description: 'Menu de avisos',
+        },
+        {
+          id: BOT_BUTTON_IDS.BACK,
+          title: '🏠 Menu principal',
+          description: 'Início',
+        },
+      );
     }
 
     const body =
@@ -146,10 +178,6 @@ export class AlertsFlowService {
 
     await this.whatsapp.sendList(waId, body, 'Atléticas', [
       { title: 'Suas atléticas', rows },
-    ]);
-    await this.whatsapp.sendReplyButtons(waId, 'Pronto?', [
-      { id: BOT_BUTTON_IDS.ALERTS, title: '🔔 Voltar avisos' },
-      { id: BOT_BUTTON_IDS.BACK, title: '🏠 Menu' },
     ]);
   }
 

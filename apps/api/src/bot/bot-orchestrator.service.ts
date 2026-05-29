@@ -73,22 +73,17 @@ export class BotOrchestratorService {
     }
 
     try {
-      const welcomeWithMenu =
-        activation.action === 'welcome' && activation.routeAfterWelcome;
-
-      if (welcomeWithMenu) {
+      if (activation.action === 'welcome') {
         await this.router.showRootMenu(msg.waId, user.id, {
           firstName: user.name,
         });
-      } else if (activation.action === 'welcome') {
-        await this.sendWelcome(msg.waId, user.name);
       }
 
       const shouldRoute =
         activation.action === 'route' ||
         (activation.action === 'welcome' && activation.routeAfterWelcome);
 
-      if (shouldRoute && !welcomeWithMenu) {
+      if (shouldRoute) {
         await this.router.route(msg.waId, user.id, input, session.menuState);
       }
     } catch (err) {
@@ -98,16 +93,5 @@ export class BotOrchestratorService {
         body: '⚠️ Ocorreu um erro. Tente novamente ou mande *Oi* / *Chaminha* para recomeçar.',
       });
     }
-  }
-
-  private async sendWelcome(waId: string, name?: string | null) {
-    const greeting = name?.trim() ? `Oi, *${name.trim().split(' ')[0]}*! ` : 'Oi! ';
-    await this.whatsapp.sendText({
-      to: waId,
-      body:
-        `🔥 ${greeting}Eu sou a *Chaminha*, assistente do *Interunesp* no WhatsApp.\n\n` +
-        'Te ajudo com *jogos*, *festas* e dúvidas do evento.\n\n' +
-        'Para começar, mande *Oi*, *Chaminha* ou *🔥*.',
-    });
   }
 }

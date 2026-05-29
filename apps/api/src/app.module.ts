@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { resolve } from 'path';
 import { RawBodyMiddleware } from './middleware/raw-body.middleware';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bullmq';
 import { PrismaModule } from './prisma/prisma.module';
@@ -28,10 +28,17 @@ import { HealthController } from './health.controller';
       ],
     }),
     ScheduleModule.forRoot(),
-    BullModule.forRoot({
-      connection: process.env.REDIS_URL 
-        ? { url: process.env.REDIS_URL } 
-        : { host: 'localhost', port: 6379 },
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => {
+        const url = config.get<string>('REDIS_URL');
+        return {
+          connection: url
+            ? { url }
+            : { host: 'localhost', port: 6379 },
+        };
+      },
+      inject: [ConfigService],
     }),
     BullModule.registerQueue(
       { name: 'campaigns' },

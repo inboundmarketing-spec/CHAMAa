@@ -90,6 +90,21 @@ export function canAccessConfirmations(user: AdminUser | null) {
   return hasFullAccess(user) || isVenueCoordinator(user) || isNeutral(user);
 }
 
+/** Mesa, Criativa e Admin: painel com visão geral das operações. */
+export function isConfirmationsOverview(user: AdminUser | null) {
+  if (!user) return false;
+  return (
+    user.role === 'admin' ||
+    user.role === 'mesa_lieu' ||
+    user.role === 'criativa'
+  );
+}
+
+/** Diretor C.O.: gestão operacional sem o resumo executivo da Mesa. */
+export function isCoDirectorRole(user: AdminUser | null) {
+  return user?.role === 'co_director';
+}
+
 export function roleLabel(role: string): string {
   const labels: Record<string, string> = {
     admin: 'Administrador',

@@ -13,24 +13,19 @@ import { IsEmail, IsIn, IsOptional, IsString, MinLength } from 'class-validator'
 import {
   AdminRole,
   canManageAuthorizations,
+  GRANTABLE_AUTHORIZATION_ROLES,
   grantableAuthorizationRoles,
 } from '@chama/shared';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AllowedEmailsService } from '../auth/allowed-emails.service';
 import { AdminRequestUser } from '../auth/admin-permissions';
 
-const GRANTABLE = [
-  AdminRole.CO_DIRECTOR,
-  AdminRole.VENUE_COORDINATOR,
-  AdminRole.NEUTRAL,
-] as const;
-
 class AddAuthorizationDto {
   @IsEmail()
   email!: string;
 
-  @IsIn(GRANTABLE)
-  role!: (typeof GRANTABLE)[number];
+  @IsIn([...GRANTABLE_AUTHORIZATION_ROLES])
+  role!: (typeof GRANTABLE_AUTHORIZATION_ROLES)[number];
 
   @IsOptional()
   @IsString()

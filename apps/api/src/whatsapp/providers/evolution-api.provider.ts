@@ -20,8 +20,10 @@ export class EvolutionApiWhatsAppProvider implements IWhatsAppProvider {
   private readonly apiKey: string;
 
   constructor(private readonly config: ConfigService) {
-    const baseURL =
-      this.config.get('EVOLUTION_API_URL') ?? 'http://localhost:8080';
+    const baseURL = this.config.get<string>('EVOLUTION_API_URL');
+    if (!baseURL) {
+      throw new Error('EVOLUTION_API_URL não configurada');
+    }
     this.instance = this.config.get('EVOLUTION_INSTANCE', 'chama');
     this.apiKey = this.config.get('EVOLUTION_API_KEY', '');
     this.client = axios.create({

@@ -84,10 +84,12 @@ export class HelpLlmService implements OnModuleInit {
     };
 
     if (baseUrl.includes('openrouter.ai')) {
-      headers['HTTP-Referer'] =
+      const referer =
         this.config.get<string>('OPENROUTER_SITE_URL') ??
-        this.config.get<string>('PUBLIC_API_URL') ??
-        'http://localhost:3001';
+        this.config.get<string>('PUBLIC_API_URL');
+      if (referer) {
+        headers['HTTP-Referer'] = referer;
+      }
       headers['X-Title'] =
         this.config.get<string>('OPENROUTER_APP_NAME') ?? 'CHAMA Chaminha';
     }

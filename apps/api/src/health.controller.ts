@@ -4,9 +4,7 @@ import { Controller, Get } from '@nestjs/common';
 export class HealthController {
   @Get()
   root() {
-    const panel =
-      process.env.CORS_ORIGIN?.split(',')[0]?.trim() ??
-      'http://localhost:3000';
+    const panel = process.env.CORS_ORIGIN?.split(',')[0]?.trim() ?? null;
 
     return {
       status: 'ok',

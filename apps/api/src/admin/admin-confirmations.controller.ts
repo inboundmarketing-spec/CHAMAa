@@ -153,7 +153,11 @@ export class AdminConfirmationsController {
         },
         include: {
           match: {
-            include: { modalidade: true, venue: true },
+            include: {
+              modalidade: true,
+              venue: true,
+              participants: { orderBy: { sortOrder: 'asc' } },
+            },
           },
           requestedBy: { select: { id: true, name: true, email: true } },
         },
@@ -163,7 +167,11 @@ export class AdminConfirmationsController {
         where: { match: matchFilter },
         include: {
           match: {
-            include: { modalidade: true, venue: true },
+            include: {
+              modalidade: true,
+              venue: true,
+              participants: { orderBy: { sortOrder: 'asc' } },
+            },
           },
           adminUser: { select: { id: true, name: true, email: true } },
           assignedBy: { select: { id: true, name: true } },

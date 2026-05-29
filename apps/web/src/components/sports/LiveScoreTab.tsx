@@ -202,7 +202,7 @@ export function LiveScoreTab({
     <div>
       <p style={{ color: 'var(--muted)', marginTop: 0 }}>
         {isNeut
-          ? 'Você vê todas as partidas ao vivo. Para alterar placar ou registrar ficha, o C.O. precisa atribuir você à partida em Confirmações.'
+          ? 'Você vê todas as partidas ao vivo. Para alterar placar ou registrar ficha, o C.O. precisa atribuir você à partida em Autorizações → Confirmações.'
           : 'Mesa do C.O. da praça: o placar é salvo automaticamente ao alterar.'}
       </p>
       {live.map((m) => {
@@ -437,7 +437,8 @@ export function LiveScoreTab({
                 }}
               >
                 Peça ao C.O. da praça para atribuir você a esta partida em{' '}
-                <strong>Confirmações</strong> se precisar operar o placar.
+                <strong>Autorizações</strong> (aba Confirmações) se precisar operar
+                o placar.
               </p>
             )}
           </div>
@@ -451,7 +452,7 @@ export function LiveScoreTab({
               ? isPlacementMatch(finishTarget.modalidade)
                 ? 'As colocações registradas serão o resultado final da prova.'
                 : 'Esta ação não pode ser desfeita. O placar atual será registrado como resultado final da partida.'
-              : 'O C.O. da praça precisa autorizar o encerramento em Confirmações (menu lateral) antes da partida ser finalizada.'
+              : 'O C.O. da praça precisa autorizar o encerramento em Autorizações → Confirmações antes da partida ser finalizada.'
           }
           confirmLabel={
             finishDirectly ? 'Encerrar partida' : 'Enviar solicitação'

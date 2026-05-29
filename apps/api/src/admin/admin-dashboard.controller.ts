@@ -124,7 +124,7 @@ export class AdminDashboardController {
       {
         label: 'Encerramentos pendentes',
         value: pendingClosures,
-        href: '/confirmations',
+        href: '/authorizations?tab=operations',
       },
       { label: 'Finalizados hoje', value: finishedToday, href: '/matches' },
     ];
@@ -199,9 +199,13 @@ export class AdminDashboardController {
       {
         label: 'Encerramentos pendentes',
         value: pendingClosures,
-        href: '/confirmations',
+        href: '/authorizations?tab=operations',
       },
-      { label: 'Neutros atribuídos', value: assignedNeutrals, href: '/confirmations' },
+      {
+        label: 'Neutros atribuídos',
+        value: assignedNeutrals,
+        href: '/authorizations?tab=operations',
+      },
     ];
   }
 
@@ -229,7 +233,7 @@ export class AdminDashboardController {
       {
         label: 'Suas solicitações pendentes',
         value: pendingMyClosure,
-        href: '/confirmations',
+        href: '/authorizations?tab=operations',
       },
     ];
   }

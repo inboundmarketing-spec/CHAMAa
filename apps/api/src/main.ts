@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { PrismaExceptionFilter } from './common/prisma-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -12,23 +13,22 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, transform: true }),
   );
-  const corsFromEnv = process.env.CORS_ORIGIN?.split(',').map((o) => o.trim());
+  app.useGlobalFilters(new PrismaExceptionFilter());
+  const corsFromEnv = process.env.CORS_ORIGIN?.split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
   app.enableCors({
-    origin:
-      corsFromEnv ??
-      (process.env.NODE_ENV === 'production'
-        ? ['http://localhost:3000']
-        : [
-            'http://localhost:3000',
-            'http://127.0.0.1:3000',
-            /^http:\/\/localhost:\d+$/,
-            /^http:\/\/127\.0\.0\.1:\d+$/,
-          ]),
+    origin: corsFromEnv?.length ? corsFromEnv : false,
     credentials: true,
   });
   const port = process.env.PORT ?? 3001;
   await app.listen(port);
-  console.log(`CHAMA API rodando em http://localhost:${port}`);
+  const publicUrl = process.env.PUBLIC_API_URL?.replace(/\/$/, '');
+  console.log(
+    publicUrl
+      ? `CHAMA API rodando em ${publicUrl}`
+      : `CHAMA API rodando na porta ${port}`,
+  );
 }
 
 bootstrap();

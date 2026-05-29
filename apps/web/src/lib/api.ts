@@ -61,7 +61,11 @@ export async function apiForm<T>(
     } catch {
       /* texto bruto */
     }
-    throw new Error(message);
+    throw new Error(
+      message && message !== res.statusText
+        ? `${message} (${path})`
+        : `${res.statusText || 'Erro na requisição'} (${path})`,
+    );
   }
   if (res.status === 204) return undefined as T;
   const text = await res.text();
@@ -100,7 +104,11 @@ export async function api<T>(
     } catch {
       /* texto bruto */
     }
-    throw new Error(message);
+    throw new Error(
+      message && message !== res.statusText
+        ? `${message} (${path})`
+        : `${res.statusText || 'Erro na requisição'} (${path})`,
+    );
   }
   if (res.status === 204) return undefined as T;
   const text = await res.text();
@@ -132,7 +140,11 @@ async function publicApi<T>(path: string, options: RequestInit = {}): Promise<T>
     } catch {
       /* texto bruto */
     }
-    throw new Error(message);
+    throw new Error(
+      message && message !== res.statusText
+        ? `${message} (${path})`
+        : `${res.statusText || 'Erro na requisição'} (${path})`,
+    );
   }
   return res.json() as Promise<T>;
 }

@@ -23,10 +23,13 @@ function isSportsOnlyAllowedPath(
   if (pathname === DEFAULT_HOME) return true;
   if (pathname === '/matches') return true;
   if (pathname === '/local-places') return true;
-  if (pathname === '/authorizations' && canManageAuthorizations(user)) {
+  if (
+    pathname === '/authorizations' &&
+    (canManageAuthorizations(user) || canAccessConfirmations(user))
+  ) {
     return true;
   }
-  if (pathname === '/confirmations' && canAccessConfirmations(user)) {
+  if (pathname === '/confirmations') {
     return true;
   }
   return false;

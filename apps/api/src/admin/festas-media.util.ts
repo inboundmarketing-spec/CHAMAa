@@ -9,8 +9,10 @@ const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const VIDEO_TYPES = new Set(['video/mp4', 'video/quicktime']);
 
 export function publicMediaUrl(path: string): string {
-  const base =
-    process.env.PUBLIC_API_URL?.replace(/\/$/, '') ?? 'http://127.0.0.1:3001';
+  const base = process.env.PUBLIC_API_URL?.replace(/\/$/, '');
+  if (!base) {
+    throw new BadRequestException('PUBLIC_API_URL não configurada');
+  }
   return `${base}${path.startsWith('/') ? path : `/${path}`}`;
 }
 

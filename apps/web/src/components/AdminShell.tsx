@@ -19,12 +19,6 @@ import { AdminBrand } from '@/components/chaminha/AdminBrand';
 import { NavFlameIndicator } from '@/components/chaminha/NavFlameIndicator';
 const ALL_NAV = [
   { href: '/dashboard', label: 'Dashboard', sportsOnly: true },
-  {
-    href: '/confirmations',
-    label: 'Confirmações',
-    sportsOnly: true,
-    requiresConfirmations: true,
-  },
   { href: '/matches', label: 'Esportes', sportsOnly: true },
   { href: '/bracket', label: 'Chaveamento', sportsOnly: false },
   { href: '/challenges', label: 'Desafios', sportsOnly: false },
@@ -55,7 +49,7 @@ const ALL_NAV = [
     href: '/authorizations',
     label: 'Autorizações',
     sportsOnly: true,
-    requiresAuthorizations: true,
+    requiresAuthorizationsOrConfirmations: true,
   },
 ];
 
@@ -70,11 +64,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       ? ALL_NAV.filter((item) => item.sportsOnly)
       : ALL_NAV;
     return base.filter((item) => {
-    if ('requiresAuthorizations' in item && item.requiresAuthorizations) {
-      return canManageAuthorizations(user);
-    }
-    if ('requiresConfirmations' in item && item.requiresConfirmations) {
-      return canAccessConfirmations(user);
+    if (
+      'requiresAuthorizationsOrConfirmations' in item &&
+      item.requiresAuthorizationsOrConfirmations
+    ) {
+      return canManageAuthorizations(user) || canAccessConfirmations(user);
     }
     if ('requiresBroadcast' in item && item.requiresBroadcast) {
       return canManageBroadcasts(user);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useUrlTab } from '@/lib/use-url-tab';
 import { api } from '@/lib/api';
 import {
   useAdminUser,
@@ -36,7 +36,6 @@ type StandingsApi = {
 };
 
 export default function MatchesPage() {
-  const searchParams = useSearchParams();
   const user = useAdminUser();
   const isCo = isVenueCoordinator(user);
   const isNeut = isNeutral(user);
@@ -51,12 +50,8 @@ export default function MatchesPage() {
     return list;
   }, []);
 
-  const tabFromUrl = searchParams.get('tab') as TabId | null;
   const defaultTab: TabId = isCo || isNeut ? 'live' : 'matches';
-  const initialTab =
-    tabFromUrl && tabs.some((t) => t.id === tabFromUrl) ? tabFromUrl : defaultTab;
-
-  const [tab, setTab] = useState<TabId>(initialTab);
+  const { tab, selectTab } = useUrlTab({ tabs, defaultTab });
   const [matches, setMatches] = useState<MatchRow[]>([]);
   const [standingsPayload, setStandingsPayload] = useState<StandingsApi>({
     first: [],
@@ -82,13 +77,6 @@ export default function MatchesPage() {
     load().catch(console.error);
   }, [load]);
 
-  useEffect(() => {
-    const urlTab = searchParams.get('tab') as TabId | null;
-    if (urlTab && tabs.some((t) => t.id === urlTab)) {
-      setTab(urlTab);
-    }
-  }, [searchParams, tabs]);
-
   const liveCount = matches.filter((m) => m.status === 'live').length;
 
   return (
@@ -112,7 +100,7 @@ export default function MatchesPage() {
             key={t.id}
             type="button"
             className={`tab ${tab === t.id ? 'active' : ''}`}
-            onClick={() => setTab(t.id)}
+            onClick={() => selectTab(t.id)}
           >
             {t.label}
             {t.id === 'live' && liveCount > 0 && (

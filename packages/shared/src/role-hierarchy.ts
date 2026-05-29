@@ -16,13 +16,19 @@ export function authorizationRoleTier(role: string): number {
   }
 }
 
-const GRANTABLE_ROLES = [
+/** Cargos que podem ser incluídos na lista de primeiro acesso. */
+export const GRANTABLE_AUTHORIZATION_ROLES = [
+  'mesa_lieu',
+  'criativa',
   'co_director',
   'venue_coordinator',
   'neutral',
 ] as const;
 
-export type GrantableAuthorizationRole = (typeof GRANTABLE_ROLES)[number];
+export type GrantableAuthorizationRole =
+  (typeof GRANTABLE_AUTHORIZATION_ROLES)[number];
+
+const PEER_MESA_CRIATIVA = ['mesa_lieu', 'criativa'] as const;
 
 export function canManageAuthorizations(role: string): boolean {
   const tier = authorizationRoleTier(role);
@@ -36,13 +42,30 @@ export function canGrantAuthorizationRole(
   const actorTier = authorizationRoleTier(actorRole);
   const targetTier = authorizationRoleTier(targetRole);
   if (actorTier < 0 || targetTier < 0) return false;
+
+  if (actorRole === 'admin') {
+    return (GRANTABLE_AUTHORIZATION_ROLES as readonly string[]).includes(
+      targetRole,
+    );
+  }
+
+  if (
+    actorTier === 0 &&
+    (PEER_MESA_CRIATIVA as readonly string[]).includes(actorRole)
+  ) {
+    if ((PEER_MESA_CRIATIVA as readonly string[]).includes(targetRole)) {
+      return true;
+    }
+    return targetTier > actorTier;
+  }
+
   return targetTier > actorTier;
 }
 
 export function grantableAuthorizationRoles(
   actorRole: string,
 ): GrantableAuthorizationRole[] {
-  return GRANTABLE_ROLES.filter((r) =>
+  return GRANTABLE_AUTHORIZATION_ROLES.filter((r) =>
     canGrantAuthorizationRole(actorRole, r),
   );
 }
@@ -54,5 +77,12 @@ export function isHigherAuthorizationRole(
   const existingTier = authorizationRoleTier(existingRole);
   const proposedTier = authorizationRoleTier(proposedRole);
   if (existingTier < 0 || proposedTier < 0) return false;
+  if (
+    existingTier === proposedTier &&
+    (PEER_MESA_CRIATIVA as readonly string[]).includes(existingRole) &&
+    (PEER_MESA_CRIATIVA as readonly string[]).includes(proposedRole)
+  ) {
+    return false;
+  }
   return existingTier < proposedTier;
 }

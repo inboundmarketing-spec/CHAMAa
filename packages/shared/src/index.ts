@@ -128,10 +128,12 @@ export function isSportsOnlyRole(role: string): boolean {
 
 export {
   authorizationRoleTier,
+  GRANTABLE_AUTHORIZATION_ROLES,
   canManageAuthorizations,
   canGrantAuthorizationRole,
   grantableAuthorizationRoles,
   isHigherAuthorizationRole,
+  type GrantableAuthorizationRole,
 } from './role-hierarchy';
 
 export enum SportCategory {

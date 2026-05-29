@@ -55,8 +55,7 @@ import {
 } from './bracket-draw.util';
 import {
   buildNumberedBracketInfo,
-  findNextPlannedMatch,
-  isRealTeamMatch,
+  findNextRealTeamPlannedMatch,
   occupiedConfrontoSlots,
   parseConfrontoNum,
   pickRandomPair,
@@ -485,60 +484,9 @@ export class AdminBracketController {
       divMatches,
     );
 
-    let occupied = occupiedConfrontoSlots(divMatches, active.plan);
-    let next = findNextPlannedMatch(active.plan, occupied);
+    const occupied = occupiedConfrontoSlots(divMatches, active.plan);
+    const next = findNextRealTeamPlannedMatch(active.plan, occupied);
     if (!next) {
-      throw new BadRequestException('Não há próximo confronto nesta divisão');
-    }
-
-    const createdMatches: BracketMatchRow[] = [];
-
-    while (next && !isRealTeamMatch(next)) {
-      const placeholder = await this.prisma.match.create({
-        data: {
-          modalidadeId: dto.modalidadeId,
-          homeTeam: null,
-          awayTeam: null,
-          scheduledAt: new Date(),
-          bracketRound: next.roundName,
-          bracketInfo: next.bracketInfo,
-          status: 'scheduled',
-        },
-        include: { modalidade: true, venue: true },
-      });
-      createdMatches.push(placeholder as BracketMatchRow);
-      occupied = occupiedConfrontoSlots(
-        [...divMatches, ...createdMatches],
-        active.plan,
-      );
-      next = findNextPlannedMatch(active.plan, occupied);
-    }
-
-    if (!next) {
-      if (createdMatches.length) {
-        const mergedRows: BracketMatchRow[] = [
-          ...rows.map((m) => divMatches.find((d) => d.id === m.id) ?? m),
-          ...createdMatches.filter((c) => !rows.some((r) => r.id === c.id)),
-        ];
-        const progress = getBracketDrawProgress(divisionPlans, mergedRows);
-        if (progress.isComplete) {
-          await this.publishModalidade(dto.modalidadeId);
-        }
-        const lastCreated = createdMatches[createdMatches.length - 1]!;
-        return {
-          action: 'next',
-          match: lastCreated,
-          autoCreatedCount: createdMatches.length,
-          pair: {
-            home: lastCreated.homeTeam ?? '',
-            away: lastCreated.awayTeam,
-            round: lastCreated.bracketRound ?? '',
-            info: lastCreated.bracketInfo ?? '',
-          },
-          progress,
-          published: progress.isComplete,
-        };
-      }
       throw new BadRequestException('Não há próximo confronto nesta divisão');
     }
 
@@ -548,7 +496,7 @@ export class AdminBracketController {
       ({ homeTeam, awayTeam } = resolveTeamsForPlannedMatch(
         next,
         active.teams,
-        [...divMatches, ...createdMatches],
+        divMatches,
       ));
     } catch (e) {
       throw new BadRequestException(
@@ -574,11 +522,10 @@ export class AdminBracketController {
       },
       include: { modalidade: true, venue: true },
     });
-    createdMatches.push(created as BracketMatchRow);
 
     const mergedRows: BracketMatchRow[] = [
       ...rows.map((m) => divMatches.find((d) => d.id === m.id) ?? m),
-      ...createdMatches.filter((c) => !rows.some((r) => r.id === c.id)),
+      created as BracketMatchRow,
     ];
     const progress = getBracketDrawProgress(divisionPlans, mergedRows);
 
@@ -586,12 +533,9 @@ export class AdminBracketController {
       await this.publishModalidade(dto.modalidadeId);
     }
 
-    const lastCreated = createdMatches[createdMatches.length - 1]!;
-
     return {
       action: 'next',
-      match: lastCreated,
-      autoCreatedCount: createdMatches.length,
+      match: created,
       pair: {
         home: homeTeam ?? next.homeLabel,
         away: awayTeam ?? next.awayLabel,

@@ -1455,6 +1455,30 @@ label.field-label {
   word-break: break-word;
 }
 
+.suggestion-cell-td {
+  max-width: 18rem;
+  min-width: 0;
+  vertical-align: top;
+}
+
+.suggestion-cell {
+  min-width: 0;
+}
+
+.suggestion-cell-body {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.suggestion-cell-body--clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  white-space: pre-line;
+}
+
 .campaigns-compose {
   flex: 1 1 280px;
   min-width: 0;
@@ -1902,6 +1926,10 @@ label.field-label {
 
   .table-cell-wrap {
     max-width: none;
+  }
+
+  .suggestion-cell-td {
+    max-width: 11rem;
   }
 
   .placement-row {

@@ -379,13 +379,6 @@ export default function BracketPage() {
     outcome: BracketDrawOutcome,
     action: 'next' | 'reshuffle',
   ) {
-    if (outcome.isPlaceholderBatch) {
-      const n = outcome.autoNote?.match(/\d+/)?.[0] ?? '';
-      const suffix = n
-        ? ` (${n} rodada(s) de vencedores montada(s) automaticamente).`
-        : '.';
-      return `Rodadas montadas automaticamente${suffix}`;
-    }
     const label = outcome.away
       ? `${outcome.home} × ${outcome.away}`
       : outcome.home;
@@ -393,9 +386,9 @@ export default function BracketPage() {
       return `Confronto #${outcome.confronto} resorteado: ${label}.`;
     }
     if (outcome.published) {
-      return `Confronto #${outcome.confronto}: ${label}. Chave completa e publicada no bot.${outcome.autoNote ?? ''}`;
+      return `Confronto #${outcome.confronto}: ${label}. Chave completa e publicada no bot.`;
     }
-    return `Confronto #${outcome.confronto}: ${label}.${outcome.autoNote ?? ''}`;
+    return `Confronto #${outcome.confronto}: ${label}.`;
   }
 
   async function runDrawStep(action: 'next' | 'reshuffle') {
@@ -410,7 +403,6 @@ export default function BracketPage() {
         api<{
           pair: { home: string; away: string | null; info?: string };
           match: BracketMatch;
-          autoCreatedCount?: number;
           published?: boolean;
         }>('/api/admin/bracket/draw-step', {
           method: 'POST',
@@ -424,22 +416,7 @@ export default function BracketPage() {
       ]).then(([apiRes]) => apiRes);
 
       const confronto = parseConfrontoFromInfo(res.match.bracketInfo);
-      const isPlaceholderBatch = Boolean(
-        (res.autoCreatedCount ?? 0) > 0 &&
-          !res.match.homeTeam &&
-          !res.match.awayTeam,
-      );
-      if (!isPlaceholderBatch) {
-        setLastConfronto(confronto);
-      }
-      const autoNote =
-        res.autoCreatedCount && res.autoCreatedCount > 0
-          ? isPlaceholderBatch
-            ? ` (${res.autoCreatedCount} rodada(s) de vencedores montada(s) automaticamente)`
-            : res.autoCreatedCount > 1
-              ? ` (${res.autoCreatedCount - 1} rodada(s) de vencedores montada(s) automaticamente)`
-              : ''
-          : '';
+      setLastConfronto(confronto);
       const ctx = drawContext ?? {
         sportLabel: viewMod
           ? modalidadeSportName(viewMod.name, viewMod.gender)
@@ -457,9 +434,7 @@ export default function BracketPage() {
         home: res.pair.home,
         away: res.pair.away,
         published: res.published,
-        autoNote: autoNote || undefined,
-        isPlaceholderBatch,
-        isBye: !isPlaceholderBatch && !res.pair.away,
+        isBye: !res.pair.away,
       };
       await load();
       await loadMatches(editModalidadeId);

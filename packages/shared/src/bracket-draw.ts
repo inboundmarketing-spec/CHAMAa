@@ -41,6 +41,24 @@ export function findNextPlannedMatch(
   return null;
 }
 
+/** Próximo confronto com duas atléticas a sortear (ignora placeholders de vencedor). */
+export function findNextRealTeamPlannedMatch(
+  plan: BracketPlan,
+  existingConfrontos: Set<number>,
+): BracketPlannedMatch | null {
+  for (const m of flattenBracketPlan(plan)) {
+    if (!existingConfrontos.has(m.confronto) && isRealTeamMatch(m)) return m;
+  }
+  return null;
+}
+
+export function isRealTeamDrawComplete(
+  plan: BracketPlan,
+  existingConfrontos: Set<number>,
+): boolean {
+  return findNextRealTeamPlannedMatch(plan, existingConfrontos) === null;
+}
+
 /** Confrontos de rodadas iniciais (duas atléticas) no plano. */
 export function realTeamSlotsFromPlan(plan: BracketPlan): BracketPlannedMatch[] {
   return flattenBracketPlan(plan).filter(isRealTeamMatch);

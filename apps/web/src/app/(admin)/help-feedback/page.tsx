@@ -11,6 +11,45 @@ type Suggestion = {
   waUser: { waId: string; name: string | null };
 };
 
+const SUGGESTION_PREVIEW_CHARS = 160;
+const SUGGESTION_PREVIEW_LINES = 4;
+
+function isLongSuggestion(text: string) {
+  return (
+    text.length > SUGGESTION_PREVIEW_CHARS ||
+    text.split(/\r?\n/).length > SUGGESTION_PREVIEW_LINES
+  );
+}
+
+function SuggestionText({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const long = isLongSuggestion(text);
+
+  return (
+    <div className="suggestion-cell">
+      <p
+        className={
+          long && !expanded
+            ? 'suggestion-cell-body suggestion-cell-body--clamped'
+            : 'suggestion-cell-body'
+        }
+      >
+        {text}
+      </p>
+      {long && (
+        <button
+          type="button"
+          className="btn-link"
+          onClick={() => setExpanded((open) => !open)}
+          aria-expanded={expanded}
+        >
+          {expanded ? 'Ver menos' : 'Ver mais'}
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function HelpFeedbackPage() {
   const [items, setItems] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,8 +106,8 @@ export default function HelpFeedbackPage() {
                     <br />
                     <small>{s.waUser.waId}</small>
                   </td>
-                  <td className="table-cell-wrap">
-                    {s.suggestion}
+                  <td className="suggestion-cell-td">
+                    <SuggestionText text={s.suggestion} />
                   </td>
                   <td>
                     <button

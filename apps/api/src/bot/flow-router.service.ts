@@ -17,6 +17,16 @@ import { PrismaService } from '../prisma/prisma.service';
 
 const GREETINGS = ['oi', 'olá', 'ola', 'hey', 'hi', 'menu', 'inicio', 'início'];
 
+function buildWelcomeMenuBody(firstName?: string | null): string {
+  const first = firstName?.trim().split(/\s+/)[0];
+  const hi = first ? `Oi, *${first}*! ` : 'Oi! ';
+  return (
+    `🔥 ${hi}Sou a *Chaminha*, assistente do *Interunesp*.\n\n` +
+    'Te ajudo com *jogos*, *festas* e dúvidas do evento.\n\n' +
+    'Abra o menu e escolha:'
+  );
+}
+
 @Injectable()
 export class FlowRouterService {
   constructor(
@@ -33,11 +43,19 @@ export class FlowRouterService {
     private readonly help: HelpFlowService,
   ) {}
 
-  async showRootMenu(waId: string, waUserId: string) {
+  /** `welcome` — primeira interação: apresentação + menu numa única mensagem. */
+  async showRootMenu(
+    waId: string,
+    waUserId: string,
+    welcome?: { firstName?: string | null },
+  ) {
     await this.session.setMenuState(waUserId, BotMenuState.ROOT);
+    const body = welcome
+      ? buildWelcomeMenuBody(welcome.firstName)
+      : 'O que você precisa?';
     await this.whatsapp.sendList(
       waId,
-      '🔥 *Chaminha*\nAssistente do Interunesp\n\nEscolha uma opção:',
+      body,
       'Menu principal',
       [
         {

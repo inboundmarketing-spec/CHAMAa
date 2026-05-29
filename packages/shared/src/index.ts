@@ -293,6 +293,8 @@ export {
   parseConfrontoNum,
   flattenBracketPlan,
   findNextPlannedMatch,
+  findNextRealTeamPlannedMatch,
+  isRealTeamDrawComplete,
   teamsUsedInRealMatches,
   pickRandomPair,
   divisionFromRoundName,

@@ -64,20 +64,6 @@ export async function seedInter(prisma: PrismaClient) {
       },
     });
 
-    const existingLink = await prisma.accommodationAtletica.findFirst({
-      where: { atleticaId: a.id },
-      include: { accommodation: true },
-    });
-    if (!existingLink) {
-      await prisma.accommodation.create({
-        data: {
-          name: `Alojamento ${a.campus.name}`,
-          address: `Alojamento oficial — ${a.campus.name} (cadastrar endereço no painel)`,
-          atleticas: { create: { atleticaId: a.id } },
-        },
-      });
-    }
-
     for (const challengeType of [ChallengeType.BATTERY, ChallengeType.CHEER]) {
       await prisma.atleticaChallengeDivision.upsert({
         where: {

@@ -211,11 +211,30 @@
   opacity: 0.85;
 }
 
+.wa-msg-block--list-open {
+  position: relative;
+  z-index: 3;
+}
+
+.wa-list-backdrop {
+  position: absolute;
+  inset: -120vh -50vw 0;
+  z-index: 1;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: rgba(11, 20, 26, 0.55);
+  cursor: pointer;
+}
+
 .wa-list-btn {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.35rem;
   margin-top: 2px;
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
@@ -229,17 +248,41 @@
   min-width: 200px;
 }
 
+.wa-list-btn.is-open {
+  background: #2a3942;
+}
+
+.wa-list-btn-label {
+  flex: 0 1 auto;
+}
+
+.wa-list-btn-meta {
+  flex: 0 0 100%;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #8696a0;
+  line-height: 1.2;
+}
+
 .wa-list-btn:hover {
   background: var(--accent-soft);
 }
 
 .wa-list-sheet {
-  margin-top: 2px;
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  z-index: 4;
   border-radius: 8px;
   background: #111b21;
   border: 1px solid #2a3942;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: min(240px, 42vh);
   min-width: 240px;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.45);
+  -webkit-overflow-scrolling: touch;
 }
 
 .wa-list-sheet-header {
@@ -252,7 +295,7 @@
 .wa-list-row {
   display: block;
   width: 100%;
-  padding: 0.6rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   border: none;
   border-top: 1px solid #2a3942;
   background: transparent;
@@ -273,6 +316,10 @@
   font-size: 0.75rem;
   color: #8696a0;
   margin-top: 0.1rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 
 .wa-compose {

@@ -1,13 +1,13 @@
 import {
   buildByeNote,
   DIVISION_LABELS,
-  findNextPlannedMatch,
-  flattenBracketPlan,
+  findNextRealTeamPlannedMatch,
   getFirstRoundByeTeams,
-  isRealTeamMatch,
+  isRealTeamDrawComplete,
   occupiedConfrontoSlots,
   planEliminationBracket,
   planWithDivisionSuffix,
+  realTeamSlotsFromPlan,
   type BracketPlan,
 } from '@chama/shared';
 import {
@@ -197,8 +197,7 @@ export function computeBracketDrawProgress(
   const divisions = divisionPlans.map((dp) => {
     const divMatches = matchesForDivision(bracketMatches, dp.divisionLabel);
     const occupied = occupiedConfrontoSlots(divMatches, dp.plan);
-    const flat = flattenBracketPlan(dp.plan);
-    const next = findNextPlannedMatch(dp.plan, occupied);
+    const next = findNextRealTeamPlannedMatch(dp.plan, occupied);
     const canReshuffle = divMatches.some((m) => m.homeTeam && m.awayTeam);
 
     if (!activeDivisionLabel && next) {
@@ -208,6 +207,7 @@ export function computeBracketDrawProgress(
     const oitavasRound = dp.plan.rounds.find((r) =>
       r.roundName.replace(/\s*\(.*\)$/, '').trim().startsWith('Oitavas'),
     );
+    const realSlots = realTeamSlotsFromPlan(dp.plan);
 
     return {
       division: dp.division,
@@ -216,14 +216,14 @@ export function computeBracketDrawProgress(
       teams: [...dp.teams].sort((a, b) => a.localeCompare(b, 'pt-BR')),
       firstRoundByeTeams: getFirstRoundByeTeams(dp.plan),
       oitavasMatchCount: oitavasRound?.matches.length ?? 0,
-      totalConfrontos: flat.length,
-      createdCount: occupied.size,
+      totalConfrontos: realSlots.length,
+      createdCount: divMatches.filter((m) => m.homeTeam && m.awayTeam).length,
       nextConfronto: next?.confronto ?? null,
       nextRound: next?.roundName ?? null,
-      nextIsPlaceholder: next ? !isRealTeamMatch(next) : false,
-      nextNeedsDraw: next ? isRealTeamMatch(next) : false,
+      nextIsPlaceholder: false,
+      nextNeedsDraw: !!next,
       canReshuffle,
-      isComplete: !next,
+      isComplete: isRealTeamDrawComplete(dp.plan, occupied),
       byeNote: buildByeNote(dp.plan),
       auditIssues: auditDivisionBracket(
         dp.plan,
@@ -234,7 +234,7 @@ export function computeBracketDrawProgress(
   });
 
   const totalPlanned = divisionPlans.reduce(
-    (s, dp) => s + flattenBracketPlan(dp.plan).length,
+    (s, dp) => s + realTeamSlotsFromPlan(dp.plan).length,
     0,
   );
 

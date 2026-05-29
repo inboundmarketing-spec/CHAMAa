@@ -119,7 +119,6 @@ sequenceDiagram
   UI->>UI: Intro cinematográfica (~33s)
   UI->>UI: Anúncio divisão (clique Iniciar roleta)
   UI->>API: POST draw-step action=next
-  API->>API: Cria placeholders se necessário
   API->>API: Sorteia próximo slot com duas atléticas
   UI->>UI: Roleta + resultado
   Op->>UI: Continuar
@@ -133,19 +132,20 @@ sequenceDiagram
 | **Intro** | Só no **primeiro** sorteio da modalidade; tempos em `BracketDrawIntro.tsx` (`INTRO_MS`). |
 | **Anúncio** | Ao mudar de divisão; **só avança com** “Iniciar roleta” (sem timer automático). |
 | **Roleta** | Mínimo ~3,2 s; sorteia par aleatório de atléticas **ainda não usadas** em confrontos reais. |
-| **Resultado** | Mostra confronto sorteado; placeholders mostram “Rodadas montadas automaticamente”. |
+| **Resultado** | Mostra confronto sorteado. |
 
 ### O que o `draw-step` faz (`POST /api/admin/bracket/draw-step`)
 
 1. Monta planos por divisão (`buildDivisionPlans`) com as mesmas regras do painel.
-2. Encontra o **próximo confronto** do plano ainda não ocupado.
-3. Enquanto o próximo for **placeholder** (*Vencedor confronto N*), **cria** a partida no banco sem sortear times.
-4. Quando o próximo for **slot real** (duas atléticas no plano), sorteia par aleatório entre elegíveis livres e grava `Confronto N · Time A × Time B`.
-5. Ao completar a última divisão, **publica** a chave no bot (`bracketPublished`).
+2. Encontra o **próximo confronto com duas atléticas** a sortear (ignora placeholders de *Vencedor confronto N*).
+3. Sorteia par aleatório entre elegíveis livres e grava **apenas esse confronto** (`Confronto N · Time A × Time B`).
+4. Ao completar todos os sorteios de atléticas da última divisão, **publica** a chave no bot (`bracketPublished`).
+
+Confrontos de rodadas futuras (*Vencedor confronto N*) **não** são criados automaticamente no sorteio passo a passo — só quando você usar **Montar chave completa** ou cadastrar manualmente.
 
 **Resortear:** só o último confronto com **duas atléticas** já definidas.
 
-**Montar chave completa:** atalho que dispara o sorteio inteiro de uma vez (configurações).
+**Montar chave completa:** atalho explícito (com confirmação) que cria todos os confrontos de uma vez, incluindo placeholders.
 
 ## Confrontos manuais e exclusões
 
@@ -248,4 +248,4 @@ Placeholders usam `Confronto N · Vencedor confronto X × Vencedor confronto Y` 
 
 ---
 
-**Resumo:** chave = fila embaralhada + emparelhamento por rodada; sobra de **time** → joga na rodada seguinte (início da fila); sobra de **vencedor** → aguarda uma rodada; sorteio preenche apenas confrontos com duas atléticas; o restante é montado automaticamente como *Vencedor confronto N*.
+**Resumo:** chave = fila embaralhada + emparelhamento por rodada; sobra de **time** → joga na rodada seguinte (início da fila); sobra de **vencedor** → aguarda uma rodada; sorteio passo a passo preenche **somente** confrontos com duas atléticas; placeholders de vencedor só entram via **Montar chave completa** ou cadastro manual.

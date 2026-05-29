@@ -31,6 +31,12 @@ function formatTime(iso: string) {
   });
 }
 
+function listRowCount(
+  sections?: { rows: { id: string; title: string; description?: string }[] }[],
+) {
+  return sections?.reduce((n, s) => n + s.rows.length, 0) ?? 0;
+}
+
 function ButtonCard({
   buttons,
   moreButtons,
@@ -164,35 +170,53 @@ function MessageBubble({
   if (msg.type === 'list' && msg.listButton) {
     const listBody =
       bodyText.length > 0 && !isMoreOptionsLabel(msg.body) ? bodyText : '';
+    const optionCount = listRowCount(msg.sections);
     return (
       <div className={`wa-msg-row ${rowClass}`}>
         <div className="wa-msg-col">
-          <div className="wa-msg-block wa-msg-block--with-buttons">
+          <div
+            className={`wa-msg-block wa-msg-block--with-buttons${listOpen ? ' wa-msg-block--list-open' : ''}`}
+          >
             {listBody && (
               <div className="wa-bubble">
                 {formatWhatsAppText(listBody)}
               </div>
             )}
+            {listOpen && (
+              <button
+                type="button"
+                className="wa-list-backdrop"
+                aria-label="Fechar menu"
+                onClick={() => setListOpen(false)}
+              />
+            )}
             <button
               type="button"
-              className="wa-list-btn"
+              className={`wa-list-btn${listOpen ? ' is-open' : ''}`}
               onClick={() => setListOpen((o) => !o)}
+              aria-expanded={listOpen}
             >
               <span className="wa-list-icon" aria-hidden>
-                ☰
+                {listOpen ? '▾' : '☰'}
               </span>
-              {msg.listButton}
+              <span className="wa-list-btn-label">{msg.listButton}</span>
+              {!listOpen && optionCount > 0 && (
+                <span className="wa-list-btn-meta">{optionCount} opções</span>
+              )}
             </button>
             {listOpen && msg.sections && (
-              <div className="wa-list-sheet">
+              <div className="wa-list-sheet" role="listbox">
                 {msg.sections.map((section) => (
                   <div key={section.title}>
-                    <div className="wa-list-sheet-header">{section.title}</div>
+                    {section.title && section.title !== 'Menu' && (
+                      <div className="wa-list-sheet-header">{section.title}</div>
+                    )}
                     {section.rows.map((row) => (
                       <button
                         key={row.id}
                         type="button"
                         className="wa-list-row"
+                        role="option"
                         onClick={() => {
                           setListOpen(false);
                           onButtonClick(row.id, row.title);

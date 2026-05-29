@@ -2,7 +2,8 @@ import {
   buildByeNote,
   buildNumberedBracketInfo,
   DIVISION_LABELS,
-  findNextPlannedMatch,
+  findNextRealTeamPlannedMatch,
+  isRealTeamDrawComplete,
   flattenBracketPlan,
   isRealTeamMatch,
   occupiedConfrontoSlots,
@@ -167,7 +168,7 @@ export function findActiveDivisionPlan(
   for (const dp of divisionPlans) {
     const divMatches = matchesForDivision(allMatches, dp.divisionLabel);
     const occupied = occupiedConfrontoSlots(divMatches, dp.plan);
-    const next = findNextPlannedMatch(dp.plan, occupied);
+    const next = findNextRealTeamPlannedMatch(dp.plan, occupied);
     if (next) return dp;
   }
   return null;
@@ -209,10 +210,10 @@ export function getBracketDrawProgress(
   const divisions = divisionPlans.map((dp) => {
     const divMatches = matchesForDivision(allMatches, dp.divisionLabel);
     const occupied = occupiedConfrontoSlots(divMatches, dp.plan);
-    const flat = flattenBracketPlan(dp.plan);
-    const next = findNextPlannedMatch(dp.plan, occupied);
+    const next = findNextRealTeamPlannedMatch(dp.plan, occupied);
     const lastReal = findLastRealTeamMatch(divMatches);
     const realCount = divMatches.filter((m) => m.homeTeam && m.awayTeam).length;
+    const realSlots = realTeamSlotsFromPlan(dp.plan);
     const oitavasRound = dp.plan.rounds.find((r) =>
       r.roundName.replace(/\s*\(.*\)$/, '').trim().startsWith('Oitavas'),
     );
@@ -221,22 +222,22 @@ export function getBracketDrawProgress(
       division: dp.division,
       divisionLabel: dp.divisionLabel,
       teamCount: dp.teams.length,
-      totalConfrontos: flat.length,
-      createdCount: occupied.size,
+      totalConfrontos: realSlots.length,
+      createdCount: realCount,
       realPairingsCount: realCount,
       nextConfronto: next?.confronto ?? null,
       nextRound: next?.roundName ?? null,
-      nextIsPlaceholder: next ? !isRealTeamMatch(next) : false,
-      nextNeedsDraw: next ? isRealTeamMatch(next) : false,
+      nextIsPlaceholder: false,
+      nextNeedsDraw: !!next,
       canReshuffle: !!lastReal,
-      isComplete: !next,
+      isComplete: isRealTeamDrawComplete(dp.plan, occupied),
       oitavasMatchCount: oitavasRound?.matches.length ?? 0,
       byeNote: buildByeNote(dp.plan),
     };
   });
 
   const totalPlanned = divisionPlans.reduce(
-    (s, dp) => s + flattenBracketPlan(dp.plan).length,
+    (s, dp) => s + realTeamSlotsFromPlan(dp.plan).length,
     0,
   );
   const totalCreated = allMatches.length;

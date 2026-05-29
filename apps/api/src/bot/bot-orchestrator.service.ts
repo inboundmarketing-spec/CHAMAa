@@ -73,7 +73,14 @@ export class BotOrchestratorService {
     }
 
     try {
-      if (activation.action === 'welcome') {
+      const welcomeWithMenu =
+        activation.action === 'welcome' && activation.routeAfterWelcome;
+
+      if (welcomeWithMenu) {
+        await this.router.showRootMenu(msg.waId, user.id, {
+          firstName: user.name,
+        });
+      } else if (activation.action === 'welcome') {
         await this.sendWelcome(msg.waId, user.name);
       }
 
@@ -81,7 +88,7 @@ export class BotOrchestratorService {
         activation.action === 'route' ||
         (activation.action === 'welcome' && activation.routeAfterWelcome);
 
-      if (shouldRoute) {
+      if (shouldRoute && !welcomeWithMenu) {
         await this.router.route(msg.waId, user.id, input, session.menuState);
       }
     } catch (err) {

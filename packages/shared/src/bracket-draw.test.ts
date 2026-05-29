@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   findNextPlannedMatch,
+  findNextRealTeamPlannedMatch,
   flattenBracketPlan,
   isRealTeamMatch,
   occupiedConfrontoSlots,
@@ -31,6 +32,24 @@ describe('occupiedConfrontoSlots', () => {
     const next = findNextPlannedMatch(plan, occupied);
     expect(next?.confronto).toBe(3);
     expect(isRealTeamMatch(next!)).toBe(true);
+  });
+});
+
+describe('findNextRealTeamPlannedMatch', () => {
+  const teams = Array.from({ length: 14 }, (_, i) => `T${i + 1}`);
+  const plan = planEliminationBracket(teams);
+
+  it('ignora placeholders de vencedor', () => {
+    const realSlots = flattenBracketPlan(plan).filter(isRealTeamMatch);
+    const occupied = new Set<number>();
+    for (let i = 0; i < realSlots.length; i++) {
+      occupied.add(realSlots[i]!.confronto);
+    }
+    const nextReal = findNextRealTeamPlannedMatch(plan, occupied);
+    expect(nextReal).toBeNull();
+    const nextAny = findNextPlannedMatch(plan, occupied);
+    expect(nextAny).not.toBeNull();
+    expect(isRealTeamMatch(nextAny!)).toBe(false);
   });
 });
 

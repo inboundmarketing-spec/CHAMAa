@@ -29,9 +29,9 @@ import { HealthController } from './health.controller';
     }),
     ScheduleModule.forRoot(),
     BullModule.forRoot({
-      connection: {
-        url: process.env.REDIS_URL,
-      },
+      connection: process.env.REDIS_URL 
+        ? { url: process.env.REDIS_URL } 
+        : { host: 'localhost', port: 6379 },
     }),
     BullModule.registerQueue(
       { name: 'campaigns' },

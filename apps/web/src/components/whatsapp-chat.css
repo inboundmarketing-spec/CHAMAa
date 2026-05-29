@@ -200,88 +200,55 @@
   margin-top: 2px;
 }
 
-.wa-msg-block--with-buttons .wa-list-btn {
+.wa-list-icon {
+  opacity: 0.85;
+}
+
+.wa-list-card {
+  margin-top: 2px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #202c33;
+  border: 1px solid #2a3942;
+  min-width: 200px;
+  max-width: 100%;
+}
+
+.wa-msg-block--with-buttons .wa-list-card {
   margin-top: 0;
   border-top: none;
   border-top-left-radius: 0;
   border-top-right-radius: 8px;
 }
 
-.wa-list-icon {
-  opacity: 0.85;
-}
-
-.wa-msg-block--list-open {
-  position: relative;
-  z-index: 3;
-}
-
-.wa-list-backdrop {
-  position: absolute;
-  inset: -120vh -50vw 0;
-  z-index: 1;
-  border: none;
-  padding: 0;
-  margin: 0;
-  background: rgba(11, 20, 26, 0.55);
-  cursor: pointer;
-}
-
 .wa-list-btn {
-  position: relative;
-  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.25rem 0.35rem;
-  margin-top: 2px;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
+  gap: 0.35rem;
+  padding: 0.55rem 0.75rem;
   border: none;
-  background: #202c33;
+  background: transparent;
   color: var(--accent);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   width: 100%;
-  min-width: 200px;
 }
 
 .wa-list-btn.is-open {
-  background: #2a3942;
-}
-
-.wa-list-btn-label {
-  flex: 0 1 auto;
-}
-
-.wa-list-btn-meta {
-  flex: 0 0 100%;
-  font-size: 0.7rem;
-  font-weight: 400;
-  color: #8696a0;
-  line-height: 1.2;
+  border-bottom: 1px solid #2a3942;
 }
 
 .wa-list-btn:hover {
-  background: var(--accent-soft);
+  background: #2a3942;
 }
 
 .wa-list-sheet {
-  position: absolute;
-  bottom: calc(100% + 2px);
-  left: 0;
-  right: 0;
-  z-index: 4;
-  border-radius: 8px;
-  background: #111b21;
-  border: 1px solid #2a3942;
-  overflow-x: hidden;
+  max-height: min(220px, 38vh);
   overflow-y: auto;
-  max-height: min(240px, 42vh);
-  min-width: 240px;
-  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.45);
+  overflow-x: hidden;
+  background: #111b21;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -383,8 +350,7 @@
   }
 
   .wa-buttons,
-  .wa-list-btn,
-  .wa-list-sheet {
+  .wa-list-card {
     min-width: 0;
     width: 100%;
   }

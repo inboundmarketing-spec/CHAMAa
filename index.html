@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guia de uso do CHAMA — Bot WhatsApp e painel web dO Inter (Chaminha).">
+  <title>CHAMA — Guia de Uso | O'Inter</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <a href="#" class="logo">
+        <span class="logo-icon">🔥</span>
+        <span>CHAMA</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#whatsapp">WhatsApp</a></li>
+        <li><a href="#painel">Painel</a></li>
+        <li><a href="#cargos">Cargos</a></li>
+        <li><a href="#funcionalidades">Funcionalidades</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="inicio" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <p class="badge">O'Inter · Chaminha</p>
+          <h1>Como usar o <span class="highlight">CHAMA</span></h1>
+          <p class="hero-lead">
+            Assistente oficial do O'Inter no WhatsApp e painel web para a comissão organizadora.
+            Este guia ensina a <strong>utilizar a plataforma</strong> — menus, fluxos e permissões por cargo.
+          </p>
+          <div class="hero-actions">
+            <a href="#whatsapp" class="btn btn-primary">Usar no WhatsApp</a>
+            <a href="#painel" class="btn btn-secondary">Usar no painel</a>
+          </div>
+        </div>
+        <div class="hero-cards">
+          <div class="hero-card">
+            <span class="hero-card-icon">📱</span>
+            <h3>Bot WhatsApp</h3>
+            <p>Menus interativos para participantes e público: esportes, festas, avisos e ajuda.</p>
+          </div>
+          <div class="hero-card">
+            <span class="hero-card-icon">🖥️</span>
+            <h3>Painel web</h3>
+            <p>Operação da comissão: placar ao vivo, campanhas, SOS Lieu, chaveamento e mais.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visão geral -->
+    <section class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">O que é o CHAMA?</h2>
+        <p class="section-intro">
+          O CHAMA conecta duas frentes que você vai usar no dia a dia do evento:
+        </p>
+        <div class="cards-grid cards-3">
+          <article class="card">
+            <div class="card-header">
+              <span class="card-icon">💬</span>
+              <h3>Bot WhatsApp (Chaminha)</h3>
+            </div>
+            <p>Atende participantes e público com listas, botões e respostas automáticas. Não exige cadastro — basta conversar com o número do bot.</p>
+          </article>
+          <article class="card">
+            <div class="card-header">
+              <span class="card-icon">⚙️</span>
+              <h3>Painel web</h3>
+            </div>
+            <p>Área logada para a comissão gerenciar esportes, festas, campanhas, atendimento humano (SOS), Instagram e chaveamento.</p>
+          </article>
+          <article class="card">
+            <div class="card-header">
+              <span class="card-icon">👥</span>
+              <h3>Dois tipos de usuário</h3>
+            </div>
+            <p><strong>Participantes</strong> usam só o WhatsApp. <strong>Operadores</strong> entram no painel com e-mail autorizado e cargo definido.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- WhatsApp -->
+    <section id="whatsapp" class="section">
+      <div class="container">
+        <h2 class="section-title">Usando o bot no WhatsApp</h2>
+        <p class="section-intro">
+          Qualquer pessoa com o número do bot pode interagir. Envie <code>oi</code>, <code>menu</code> ou <code>início</code> para abrir o menu principal.
+          O bot também entende palavras-chave como “placar”, “festa” ou “alojamento”.
+        </p>
+
+        <div class="tip-box">
+          <strong>Dica:</strong> Use os botões e listas interativas sempre que aparecerem — é a forma mais rápida de navegar.
+        </div>
+
+        <div class="menu-grid">
+          <article class="menu-item">
+            <span class="menu-emoji">⚽</span>
+            <h3>Esportes</h3>
+            <ul>
+              <li>Placar ao vivo</li>
+              <li>Próximos jogos</li>
+              <li>Classificação (1ª e 2ª divisão)</li>
+              <li>Chaveamento por modalidade</li>
+              <li>Endereços das praças esportivas</li>
+            </ul>
+          </article>
+          <article class="menu-item">
+            <span class="menu-emoji">🎉</span>
+            <h3>Festas</h3>
+            <ul>
+              <li>Programação do dia e visão dos 3 dias</li>
+              <li>Local e endereço</li>
+              <li>Serviços úteis perto da festa</li>
+              <li>Vídeo promocional</li>
+              <li>Link de passaporte/ingresso (quando disponível)</li>
+            </ul>
+          </article>
+          <article class="menu-item">
+            <span class="menu-emoji">🔔</span>
+            <h3>Avisos</h3>
+            <ul>
+              <li>Ativar/desativar avisos gerais</li>
+              <li>Escolher atléticas para alertas esportivos</li>
+              <li>Respeita opt-in e LGPD</li>
+            </ul>
+          </article>
+          <article class="menu-item">
+            <span class="menu-emoji">🏆</span>
+            <h3>Desafios</h3>
+            <ul>
+              <li>Agenda de desafios do Inter</li>
+              <li>Horário, local e atlética/campus</li>
+            </ul>
+          </article>
+          <article class="menu-item">
+            <span class="menu-emoji">🎓</span>
+            <h3>Atlética</h3>
+            <ul>
+              <li>Escolher uma atlética</li>
+              <li>Ver jogos e desafios do campus</li>
+            </ul>
+          </article>
+          <article class="menu-item">
+            <span class="menu-emoji">🏠</span>
+            <h3>Alojamentos</h3>
+            <ul>
+              <li>Endereço do alojamento do campus</li>
+              <li>Serviços próximos (marmita, farmácia, hospital…)</li>
+              <li>Ordenados por distância</li>
+            </ul>
+          </article>
+          <article class="menu-item menu-item-wide">
+            <span class="menu-emoji">🤖</span>
+            <h3>Ajuda (Chaminha)</h3>
+            <p>Tire dúvidas sobre o evento. A Chaminha usa a base de conhecimento e dados ao vivo (jogos, festas). Ao encerrar, você pode avaliar se resolveu e enviar sugestões.</p>
+            <div class="sos-inline">
+              <strong>SOS Lieu:</strong> durante a Ajuda, você pode pedir atendimento humano. O bot para de responder e a equipe Lieu responde pelo painel até encerrar a sessão.
+            </div>
+          </article>
+        </div>
+
+        <h3 class="subsection-title">Comandos úteis</h3>
+        <div class="command-table-wrap">
+          <table class="command-table">
+            <thead>
+              <tr>
+                <th>Você envia</th>
+                <th>O bot faz</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>oi</code>, <code>menu</code>, <code>início</code></td><td>Abre o menu principal</td></tr>
+              <tr><td><code>placar</code></td><td>Leva ao fluxo de esportes / placar</td></tr>
+              <tr><td><code>festa</code></td><td>Abre informações de festas</td></tr>
+              <tr><td><code>alojamento</code></td><td>Mostra alojamentos e serviços próximos</td></tr>
+              <tr><td>Botões e listas</td><td>Navegação guiada dentro de cada área</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Painel -->
+    <section id="painel" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">Usando o painel web</h2>
+        <p class="section-intro">
+          Operadores acessam o painel com login. No primeiro acesso, o e-mail precisa estar autorizado pela comissão;
+          você define sua senha e recebe um cargo (admin, mesa, C.O., neutro etc.).
+        </p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <span class="flow-num">1</span>
+            <div>
+              <h4>Acesse o painel</h4>
+              <p>Entre com o e-mail autorizado e sua senha na página de login.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">2</span>
+            <div>
+              <h4>Veja o menu lateral</h4>
+              <p>As opções dependem do seu cargo — nem todo mundo vê festas, campanhas ou chaveamento.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">3</span>
+            <div>
+              <h4>Opere conforme sua função</h4>
+              <p>Atualize placar, responda SOS, modere Instagram ou gerencie campanhas, dentro das suas permissões.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Hierarquia de cargos</h3>
+        <div class="hierarchy">
+          <div class="hierarchy-level level-0">
+            <span class="level-label">Nível 0</span>
+            <span>Admin · Mesa Lieu · Criativa</span>
+            <small>Gestão ampla do evento</small>
+          </div>
+          <div class="hierarchy-arrow">↓</div>
+          <div class="hierarchy-level level-1">
+            <span class="level-label">Nível 1</span>
+            <span>Diretor C.O.</span>
+            <small>Operação esportiva centralizada</small>
+          </div>
+          <div class="hierarchy-arrow">↓</div>
+          <div class="hierarchy-level level-2">
+            <span class="level-label">Nível 2</span>
+            <span>C.O. Praça</span>
+            <small>Uma praça esportiva específica</small>
+          </div>
+          <div class="hierarchy-arrow">↓</div>
+          <div class="hierarchy-level level-3">
+            <span class="level-label">Nível 3</span>
+            <span>Neutro</span>
+            <small>Partidas atribuídas a ele</small>
+          </div>
+        </div>
+        <p class="hierarchy-note">
+          <strong>Agente</strong> e <strong>Moderador</strong> têm acesso amplo ao painel (como a mesa), mas <em>sem</em> campanhas, Instagram ou chaveamento.
+        </p>
+      </div>
+    </section>
+
+    <!-- Cargos detalhados -->
+    <section id="cargos" class="section">
+      <div class="container">
+        <h2 class="section-title">O que cada cargo pode fazer</h2>
+        <p class="section-intro">Clique em um cargo para ver permissões e áreas do painel.</p>
+
+        <div class="role-tabs">
+          <button class="role-tab active" data-role="admin">Admin</button>
+          <button class="role-tab" data-role="mesa">Mesa Lieu</button>
+          <button class="role-tab" data-role="criativa">Criativa</button>
+          <button class="role-tab" data-role="diretor">Diretor C.O.</button>
+          <button class="role-tab" data-role="moderador">Moderador / Agente</button>
+          <button class="role-tab" data-role="co">C.O. Praça</button>
+          <button class="role-tab" data-role="neutro">Neutro</button>
+        </div>
+
+        <div class="role-panels">
+          <article class="role-panel active" id="role-admin">
+            <h3>Administrador</h3>
+            <p class="role-desc">Acesso total ao painel e à operação do evento.</p>
+            <ul class="role-list">
+              <li>Dashboard com visão geral (jogos ao vivo, fila SOS, Instagram pendente)</li>
+              <li>Esportes: partidas, placar ao vivo, classificação, incidentes, cartões e pontuação</li>
+              <li>Chaveamento mata-mata: sorteio e publicação no bot</li>
+              <li>Festas, campanhas, Instagram, SOS Lieu, base de conhecimento</li>
+              <li>Autorizações: cadastrar e-mails de primeiro acesso</li>
+              <li>Confirmações: neutros, encerramentos, visão executiva</li>
+              <li>Simulador do bot para testes</li>
+            </ul>
+          </article>
+
+          <article class="role-panel" id="role-mesa">
+            <h3>Mesa da Lieu</h3>
+            <p class="role-desc">Coordenação do evento — mesmas permissões operacionais do admin na prática.</p>
+            <ul class="role-list">
+              <li>Campanhas, Instagram e chaveamento</li>
+              <li>Visão executiva em Confirmações</li>
+              <li>Esportes, festas, locais, SOS, ajuda e simulador</li>
+              <li>Pode conceder primeiro acesso a Mesa, Criativa, Diretor C.O., C.O. Praça e Neutro</li>
+            </ul>
+          </article>
+
+          <article class="role-panel" id="role-criativa">
+            <h3>Criativa</h3>
+            <p class="role-desc">Comunicação, conteúdo e esportes.</p>
+            <ul class="role-list">
+              <li>Dashboard com foco em Instagram pendente e opt-ins</li>
+              <li>Campanhas, Instagram e chaveamento</li>
+              <li>Festas (line-up, mídia, passaporte)</li>
+              <li>Esportes, desafios, locais, SOS, ajuda, simulador</li>
+              <li>Confirmações com visão overview</li>
+            </ul>
+          </article>
+
+          <article class="role-panel" id="role-diretor">
+            <h3>Diretor C.O.</h3>
+            <p class="role-desc">Operação esportiva centralizada — sem festas nem comunicação em massa.</p>
+            <div class="perm-grid">
+              <div class="perm-can">
+                <h4>Pode</h4>
+                <ul>
+                  <li>Dashboard operacional (ao vivo, jogos hoje)</li>
+                  <li>Partidas, placar ao vivo, classificação</li>
+                  <li>Confirmações e encerramentos</li>
+                  <li>Locais, desafios, SOS, ajuda, simulador</li>
+                  <li>Encerrar partidas diretamente</li>
+                  <li>Conceder acesso a C.O. Praça e Neutro</li>
+                </ul>
+              </div>
+              <div class="perm-cannot">
+                <h4>Não pode</h4>
+                <ul>
+                  <li>Gerenciar Festas</li>
+                  <li>Campanhas e Instagram</li>
+                  <li>Chaveamento</li>
+                  <li>Alterar pontuação manual de vitória</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="role-panel" id="role-moderador">
+            <h3>Moderador e Agente</h3>
+            <p class="role-desc">Operação e atendimento com acesso amplo, exceto campanhas e chaveamento.</p>
+            <ul class="role-list">
+              <li>Dashboard: fila SOS, jogos ao vivo, sessões de ajuda</li>
+              <li>Esportes, desafios, locais, festas, SOS, base de conhecimento</li>
+              <li>Simulador do bot</li>
+              <li><strong>Agente:</strong> foco em Atendimento Lieu (responder chats SOS)</li>
+              <li>Sem campanhas, Instagram ou chaveamento</li>
+            </ul>
+          </article>
+
+          <article class="role-panel" id="role-co">
+            <h3>C.O. Praça</h3>
+            <p class="role-desc">Operação restrita à praça esportiva vinculada ao usuário.</p>
+            <ul class="role-list">
+              <li>Dashboard: ao vivo na praça, partidas hoje, encerramentos pendentes</li>
+              <li>Partidas e placar ao vivo <strong>da sua praça</strong></li>
+              <li>Classificação (somente leitura)</li>
+              <li>Confirmações: atribuir neutros, fluxo de encerramento</li>
+              <li>Cartões/punições e encerramento direto de partida</li>
+              <li>Menu reduzido: Dashboard, Esportes, Locais (praças), Confirmações</li>
+              <li>Pode conceder primeiro acesso apenas a Neutro</li>
+            </ul>
+          </article>
+
+          <article class="role-panel" id="role-neutro">
+            <h3>Neutro</h3>
+            <p class="role-desc">Árbitro/neutral em partidas específicas atribuídas a ele.</p>
+            <ul class="role-list">
+              <li>Ver dashboard e jogos ao vivo (visão geral)</li>
+              <li>Operar <strong>somente partidas atribuídas</strong></li>
+              <li>Placar ao vivo e incidentes nas partidas atribuídas</li>
+              <li>Consultar praças esportivas</li>
+              <li>Confirmações: visão das suas atribuições</li>
+              <li>Sem criar/excluir partidas ou encerramento direto</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Funcionalidades -->
+    <section id="funcionalidades" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">Funcionalidades principais do painel</h2>
+
+        <div class="feature-accordion">
+          <details class="feature-item" open>
+            <summary>⚽ Esportes (<code>/matches</code>)</summary>
+            <div class="feature-body">
+              <p><strong>Partidas:</strong> criar e editar jogos (modalidade, divisão, praça, status).</p>
+              <p><strong>Placar ao vivo:</strong> atualizar placar, período, relógio, incidentes e encerramento.</p>
+              <p><strong>Classificação:</strong> tabela por divisão; fechamento de dia do Inter.</p>
+              <p>Cartões, punições, WO e pontuação manual pós-jogo (conforme cargo).</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>🏆 Chaveamento (<code>/bracket</code>)</summary>
+            <div class="feature-body">
+              <p>Plano mata-mata com folgas, sorteio interativo e publicação no bot WhatsApp.</p>
+              <p>Disponível para Admin, Mesa Lieu e Criativa.</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>🎉 Festas (<code>/events</code>)</summary>
+            <div class="feature-body">
+              <p>Festival com até 3 dias, artistas, horários, local, mapa, vídeo e passaporte.</p>
+              <p>Conteúdo refletido automaticamente no menu Festas do bot.</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>📣 Campanhas (<code>/campaigns</code>)</summary>
+            <div class="feature-body">
+              <p>Rascunho → fila → envio para quem deu opt-in e/ou grupos WhatsApp configurados.</p>
+              <p>Texto, link, mídia e preview estilo chat.</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>🆘 Atendimento Lieu (<code>/handoff</code>)</summary>
+            <div class="feature-body">
+              <p>Quando um usuário aciona SOS na Ajuda, a conversa entra na fila.</p>
+              <p>Agente atribui, responde pelo painel e encerra a sessão — o bot volta ao normal.</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>📸 Instagram (<code>/instagram</code>)</summary>
+            <div class="feature-body">
+              <p>Posts entram em fila pendente → moderação no painel ou no grupo WhatsApp de moderação.</p>
+              <p>Aprovados são enviados a grupos de broadcast e/ou opt-in.</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>📍 Locais (<code>/local-places</code>)</summary>
+            <div class="feature-body">
+              <p>Praças esportivas, alojamentos por atlética e locais úteis (marmita, farmácia…).</p>
+              <p>Cadastros públicos em <code>/cadastro-local</code> aguardam aprovação da mesa.</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>🤖 Ajuda / Chaminha (<code>/knowledge</code>)</summary>
+            <div class="feature-body">
+              <p>Base de conhecimento editável; dados ao vivo injetados nas respostas do bot.</p>
+              <p>Feedback dos usuários em <code>/help-feedback</code>.</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>✅ Autorizações (<code>/authorizations</code>)</summary>
+            <div class="feature-body">
+              <p><strong>Primeiro acesso:</strong> cadastrar e-mail, nome, cargo e praça (respeitando hierarquia).</p>
+              <p><strong>Confirmações:</strong> neutros, encerramentos e visões por cargo.</p>
+            </div>
+          </details>
+
+          <details class="feature-item">
+            <summary>💬 Simulador (<code>/simulator</code>)</summary>
+            <div class="feature-body">
+              <p>Chat simulado do WhatsApp para testar fluxos do bot sem celular — útil para treinar a equipe.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section">
+      <div class="container cta-box">
+        <h2>Pronto para usar?</h2>
+        <p>Participantes conversam com a Chaminha no WhatsApp. Operadores entram no painel com e-mail autorizado.</p>
+        <div class="cta-links">
+          <a href="#whatsapp" class="btn btn-primary">Guia do WhatsApp</a>
+          <a href="#cargos" class="btn btn-secondary">Ver meu cargo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p><strong>CHAMA</strong> — Bot WhatsApp do O'Inter · Chaminha</p>
+      <p class="footer-muted">Guia de uso da plataforma para participantes e comissão organizadora.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

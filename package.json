@@ -1,0 +1,27 @@
+{
+  "name": "chama",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "npm@11.5.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "db:generate": "npm run db:generate -w @chama/api",
+    "db:migrate": "npm run db:migrate -w @chama/api",
+    "db:push": "npm run db:push -w @chama/api",
+    "db:seed": "npm run db:seed -w @chama/api"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.3",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

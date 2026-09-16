@@ -576,7 +576,6 @@ code {
 .level-0 { border-color: var(--accent); }
 .level-1 { border-color: #6366f1; }
 .level-2 { border-color: #22c55e; }
-.level-3 { border-color: #eab308; }
 
 .hierarchy-arrow {
   color: var(--text-muted);

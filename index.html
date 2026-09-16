@@ -337,7 +337,7 @@
         <h2 class="section-title">Usando o painel web</h2>
         <p class="section-intro">
           Operadores acessam o painel com login. No primeiro acesso, o e-mail precisa estar autorizado pela comissão;
-          você define sua senha e recebe um cargo (admin, mesa, C.O., neutro etc.).
+          você define sua senha e recebe um cargo (admin, mesa, C.O. etc.).
         </p>
 
         <div class="flow-steps">
@@ -383,12 +383,6 @@
             <span>C.O. Praça</span>
             <small>Uma praça esportiva específica</small>
           </div>
-          <div class="hierarchy-arrow">↓</div>
-          <div class="hierarchy-level level-3">
-            <span class="level-label">Nível 3</span>
-            <span>Neutro</span>
-            <small>Partidas atribuídas a ele</small>
-          </div>
         </div>
         <p class="hierarchy-note">
           <strong>Agente</strong> e <strong>Moderador</strong> têm acesso amplo ao painel (como a mesa), mas <em>sem</em> campanhas ou Instagram.
@@ -409,7 +403,6 @@
           <button type="button" class="role-tab" role="tab" id="tab-diretor" data-role="diretor" aria-selected="false" aria-controls="role-diretor" tabindex="-1">Diretor C.O.</button>
           <button type="button" class="role-tab" role="tab" id="tab-moderador" data-role="moderador" aria-selected="false" aria-controls="role-moderador" tabindex="-1">Moderador / Agente</button>
           <button type="button" class="role-tab" role="tab" id="tab-co" data-role="co" aria-selected="false" aria-controls="role-co" tabindex="-1">C.O. Praça</button>
-          <button type="button" class="role-tab" role="tab" id="tab-neutro" data-role="neutro" aria-selected="false" aria-controls="role-neutro" tabindex="-1">Neutro</button>
         </div>
 
         <div class="role-panels">
@@ -421,7 +414,7 @@
               <li>Esportes: partidas, placar ao vivo, classificação, incidentes, cartões e pontuação</li>
               <li>Festas, campanhas, Instagram, SOS Lieu, base de conhecimento</li>
               <li>Autorizações: cadastrar e-mails de primeiro acesso</li>
-              <li>Confirmações: neutros, encerramentos, visão executiva</li>
+              <li>Confirmações: encerramentos, visão executiva</li>
               <li>Simulador do bot para testes</li>
             </ul>
           </article>
@@ -433,7 +426,7 @@
               <li>Campanhas e Instagram</li>
               <li>Visão executiva em Confirmações</li>
               <li>Esportes, festas, locais, SOS, ajuda e simulador</li>
-              <li>Pode conceder primeiro acesso a Mesa, Criativa, Diretor C.O., C.O. Praça e Neutro</li>
+              <li>Pode conceder primeiro acesso a Mesa, Criativa, Diretor C.O. e C.O. Praça</li>
             </ul>
           </article>
 
@@ -461,7 +454,7 @@
                   <li>Confirmações e encerramentos</li>
                   <li>Locais, desafios, SOS, ajuda, simulador</li>
                   <li>Encerrar partidas diretamente</li>
-                  <li>Conceder acesso a C.O. Praça e Neutro</li>
+                  <li>Conceder acesso a C.O. Praça</li>
                 </ul>
               </div>
               <div class="perm-cannot">
@@ -494,23 +487,9 @@
               <li>Dashboard: ao vivo na praça, partidas hoje, encerramentos pendentes</li>
               <li>Partidas e placar ao vivo <strong>da sua praça</strong></li>
               <li>Classificação (somente leitura)</li>
-              <li>Confirmações: atribuir neutros, fluxo de encerramento</li>
+              <li>Confirmações: fluxo de encerramento</li>
               <li>Cartões/punições e encerramento direto de partida</li>
               <li>Menu reduzido: Dashboard, Esportes, Locais (praças), Confirmações</li>
-              <li>Pode conceder primeiro acesso apenas a Neutro</li>
-            </ul>
-          </article>
-
-          <article class="role-panel" role="tabpanel" id="role-neutro" aria-labelledby="tab-neutro" hidden tabindex="0">
-            <h3>Neutro</h3>
-            <p class="role-desc">Árbitro/neutral em partidas específicas atribuídas a ele.</p>
-            <ul class="role-list">
-              <li>Ver dashboard e jogos ao vivo (visão geral)</li>
-              <li>Operar <strong>somente partidas atribuídas</strong></li>
-              <li>Placar ao vivo e incidentes nas partidas atribuídas</li>
-              <li>Consultar praças esportivas</li>
-              <li>Confirmações: visão das suas atribuições</li>
-              <li>Sem criar/excluir partidas ou encerramento direto</li>
             </ul>
           </article>
         </div>
@@ -585,7 +564,7 @@
             <summary>✅ Autorizações (<code>/authorizations</code>)</summary>
             <div class="feature-body">
               <p><strong>Primeiro acesso:</strong> cadastrar e-mail, nome, cargo e praça (respeitando hierarquia).</p>
-              <p><strong>Confirmações:</strong> neutros, encerramentos e visões por cargo.</p>
+              <p><strong>Confirmações:</strong> encerramentos e visões por cargo.</p>
             </div>
           </details>
 

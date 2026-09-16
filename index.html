@@ -3,24 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Guia de uso do CHAMA — Bot WhatsApp e painel web dO Inter (Chaminha).">
+  <meta name="description" content="Guia de uso do CHAMA — Bot WhatsApp e painel web do O'Inter (Chaminha).">
+  <meta name="theme-color" content="#0c0f14">
   <title>CHAMA — Guia de Uso | O'Inter</title>
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/favicon.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="CHAMA — Guia de Uso | O'Inter">
+  <meta property="og:description" content="Guia de uso do CHAMA — Bot WhatsApp e painel web do O'Inter (Chaminha).">
+  <meta property="og:image" content="assets/img/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CHAMA — Guia de Uso | O'Inter">
+  <meta name="twitter:description" content="Guia de uso do CHAMA — Bot WhatsApp e painel web do O'Inter (Chaminha).">
+  <meta name="twitter:image" content="assets/img/og-image.svg">
+
+  <script>
+    (function () {
+      var link = document.createElement("link");
+      link.rel = "canonical";
+      link.href = location.origin + location.pathname.replace(/\/index\.html$/, "/");
+      document.head.appendChild(link);
+
+      var ogUrl = document.querySelector('meta[property="og:url"]');
+      if (!ogUrl) {
+        ogUrl = document.createElement("meta");
+        ogUrl.setAttribute("property", "og:url");
+        document.head.appendChild(ogUrl);
+      }
+      ogUrl.content = link.href;
+
+      ["og:image", "twitter:image"].forEach(function (name) {
+        var isTwitter = name.indexOf("twitter:") === 0;
+        var selector = isTwitter
+          ? 'meta[name="' + name + '"]'
+          : 'meta[property="' + name + '"]';
+        var meta = document.querySelector(selector);
+        if (meta && meta.content.indexOf("http") !== 0) {
+          meta.content = new URL(meta.content, link.href).href;
+        }
+      });
+    })();
+  </script>
+
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="assets/js/main.js" defer></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "CHAMA — Guia de Uso",
+    "description": "Guia de uso do CHAMA — Bot WhatsApp e painel web do O'Inter (Chaminha).",
+    "inLanguage": "pt-BR"
+  }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#conteudo-principal">Ir para o conteúdo</a>
+
   <header class="site-header">
-    <nav class="nav container">
-      <a href="#" class="logo">
-        <span class="logo-icon">🔥</span>
+    <nav class="nav container" aria-label="Principal">
+      <a href="#inicio" class="logo">
+        <span class="logo-icon" aria-hidden="true">🔥</span>
         <span>CHAMA</span>
       </a>
-      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+      <button type="button" class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-links">
+      <ul class="nav-links" id="nav-links">
         <li><a href="#inicio">Início</a></li>
         <li><a href="#whatsapp">WhatsApp</a></li>
         <li><a href="#painel">Painel</a></li>
@@ -30,7 +88,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="conteudo-principal">
     <!-- Hero -->
     <section id="inicio" class="hero">
       <div class="container hero-grid">
@@ -55,14 +113,14 @@
           <div class="hero-card">
             <span class="hero-card-icon">🖥️</span>
             <h3>Painel web</h3>
-            <p>Operação da comissão: placar ao vivo, campanhas, SOS Lieu, chaveamento e mais.</p>
+            <p>Operação da comissão: placar ao vivo, campanhas, SOS Lieu e mais.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Visão geral -->
-    <section class="section section-alt">
+    <section id="visao-geral" class="section section-alt">
       <div class="container">
         <h2 class="section-title">O que é o CHAMA?</h2>
         <p class="section-intro">
@@ -81,7 +139,7 @@
               <span class="card-icon">⚙️</span>
               <h3>Painel web</h3>
             </div>
-            <p>Área logada para a comissão gerenciar esportes, festas, campanhas, atendimento humano (SOS), Instagram e chaveamento.</p>
+            <p>Área logada para a comissão gerenciar esportes, festas, campanhas, atendimento humano (SOS) e Instagram.</p>
           </article>
           <article class="card">
             <div class="card-header">
@@ -115,7 +173,6 @@
               <li>Placar ao vivo</li>
               <li>Próximos jogos</li>
               <li>Classificação (1ª e 2ª divisão)</li>
-              <li>Chaveamento por modalidade</li>
               <li>Endereços das praças esportivas</li>
             </ul>
           </article>
@@ -216,7 +273,7 @@
             <span class="flow-num">2</span>
             <div>
               <h4>Veja o menu lateral</h4>
-              <p>As opções dependem do seu cargo — nem todo mundo vê festas, campanhas ou chaveamento.</p>
+              <p>As opções dependem do seu cargo — nem todo mundo vê festas ou campanhas.</p>
             </div>
           </div>
           <div class="flow-step">
@@ -255,7 +312,7 @@
           </div>
         </div>
         <p class="hierarchy-note">
-          <strong>Agente</strong> e <strong>Moderador</strong> têm acesso amplo ao painel (como a mesa), mas <em>sem</em> campanhas, Instagram ou chaveamento.
+          <strong>Agente</strong> e <strong>Moderador</strong> têm acesso amplo ao painel (como a mesa), mas <em>sem</em> campanhas ou Instagram.
         </p>
       </div>
     </section>
@@ -266,24 +323,23 @@
         <h2 class="section-title">O que cada cargo pode fazer</h2>
         <p class="section-intro">Clique em um cargo para ver permissões e áreas do painel.</p>
 
-        <div class="role-tabs">
-          <button class="role-tab active" data-role="admin">Admin</button>
-          <button class="role-tab" data-role="mesa">Mesa Lieu</button>
-          <button class="role-tab" data-role="criativa">Criativa</button>
-          <button class="role-tab" data-role="diretor">Diretor C.O.</button>
-          <button class="role-tab" data-role="moderador">Moderador / Agente</button>
-          <button class="role-tab" data-role="co">C.O. Praça</button>
-          <button class="role-tab" data-role="neutro">Neutro</button>
+        <div class="role-tabs" role="tablist" aria-label="Cargos do painel">
+          <button type="button" class="role-tab active" role="tab" id="tab-admin" data-role="admin" aria-selected="true" aria-controls="role-admin">Admin</button>
+          <button type="button" class="role-tab" role="tab" id="tab-mesa" data-role="mesa" aria-selected="false" aria-controls="role-mesa" tabindex="-1">Mesa Lieu</button>
+          <button type="button" class="role-tab" role="tab" id="tab-criativa" data-role="criativa" aria-selected="false" aria-controls="role-criativa" tabindex="-1">Criativa</button>
+          <button type="button" class="role-tab" role="tab" id="tab-diretor" data-role="diretor" aria-selected="false" aria-controls="role-diretor" tabindex="-1">Diretor C.O.</button>
+          <button type="button" class="role-tab" role="tab" id="tab-moderador" data-role="moderador" aria-selected="false" aria-controls="role-moderador" tabindex="-1">Moderador / Agente</button>
+          <button type="button" class="role-tab" role="tab" id="tab-co" data-role="co" aria-selected="false" aria-controls="role-co" tabindex="-1">C.O. Praça</button>
+          <button type="button" class="role-tab" role="tab" id="tab-neutro" data-role="neutro" aria-selected="false" aria-controls="role-neutro" tabindex="-1">Neutro</button>
         </div>
 
         <div class="role-panels">
-          <article class="role-panel active" id="role-admin">
+          <article class="role-panel active" role="tabpanel" id="role-admin" aria-labelledby="tab-admin" tabindex="0">
             <h3>Administrador</h3>
             <p class="role-desc">Acesso total ao painel e à operação do evento.</p>
             <ul class="role-list">
               <li>Dashboard com visão geral (jogos ao vivo, fila SOS, Instagram pendente)</li>
               <li>Esportes: partidas, placar ao vivo, classificação, incidentes, cartões e pontuação</li>
-              <li>Chaveamento mata-mata: sorteio e publicação no bot</li>
               <li>Festas, campanhas, Instagram, SOS Lieu, base de conhecimento</li>
               <li>Autorizações: cadastrar e-mails de primeiro acesso</li>
               <li>Confirmações: neutros, encerramentos, visão executiva</li>
@@ -291,30 +347,30 @@
             </ul>
           </article>
 
-          <article class="role-panel" id="role-mesa">
+          <article class="role-panel" role="tabpanel" id="role-mesa" aria-labelledby="tab-mesa" hidden tabindex="0">
             <h3>Mesa da Lieu</h3>
             <p class="role-desc">Coordenação do evento — mesmas permissões operacionais do admin na prática.</p>
             <ul class="role-list">
-              <li>Campanhas, Instagram e chaveamento</li>
+              <li>Campanhas e Instagram</li>
               <li>Visão executiva em Confirmações</li>
               <li>Esportes, festas, locais, SOS, ajuda e simulador</li>
               <li>Pode conceder primeiro acesso a Mesa, Criativa, Diretor C.O., C.O. Praça e Neutro</li>
             </ul>
           </article>
 
-          <article class="role-panel" id="role-criativa">
+          <article class="role-panel" role="tabpanel" id="role-criativa" aria-labelledby="tab-criativa" hidden tabindex="0">
             <h3>Criativa</h3>
             <p class="role-desc">Comunicação, conteúdo e esportes.</p>
             <ul class="role-list">
               <li>Dashboard com foco em Instagram pendente e opt-ins</li>
-              <li>Campanhas, Instagram e chaveamento</li>
+              <li>Campanhas e Instagram</li>
               <li>Festas (line-up, mídia, passaporte)</li>
               <li>Esportes, desafios, locais, SOS, ajuda, simulador</li>
               <li>Confirmações com visão overview</li>
             </ul>
           </article>
 
-          <article class="role-panel" id="role-diretor">
+          <article class="role-panel" role="tabpanel" id="role-diretor" aria-labelledby="tab-diretor" hidden tabindex="0">
             <h3>Diretor C.O.</h3>
             <p class="role-desc">Operação esportiva centralizada — sem festas nem comunicação em massa.</p>
             <div class="perm-grid">
@@ -334,26 +390,25 @@
                 <ul>
                   <li>Gerenciar Festas</li>
                   <li>Campanhas e Instagram</li>
-                  <li>Chaveamento</li>
                   <li>Alterar pontuação manual de vitória</li>
                 </ul>
               </div>
             </div>
           </article>
 
-          <article class="role-panel" id="role-moderador">
+          <article class="role-panel" role="tabpanel" id="role-moderador" aria-labelledby="tab-moderador" hidden tabindex="0">
             <h3>Moderador e Agente</h3>
-            <p class="role-desc">Operação e atendimento com acesso amplo, exceto campanhas e chaveamento.</p>
+            <p class="role-desc">Operação e atendimento com acesso amplo, exceto campanhas.</p>
             <ul class="role-list">
               <li>Dashboard: fila SOS, jogos ao vivo, sessões de ajuda</li>
               <li>Esportes, desafios, locais, festas, SOS, base de conhecimento</li>
               <li>Simulador do bot</li>
               <li><strong>Agente:</strong> foco em Atendimento Lieu (responder chats SOS)</li>
-              <li>Sem campanhas, Instagram ou chaveamento</li>
+              <li>Sem campanhas ou Instagram</li>
             </ul>
           </article>
 
-          <article class="role-panel" id="role-co">
+          <article class="role-panel" role="tabpanel" id="role-co" aria-labelledby="tab-co" hidden tabindex="0">
             <h3>C.O. Praça</h3>
             <p class="role-desc">Operação restrita à praça esportiva vinculada ao usuário.</p>
             <ul class="role-list">
@@ -367,7 +422,7 @@
             </ul>
           </article>
 
-          <article class="role-panel" id="role-neutro">
+          <article class="role-panel" role="tabpanel" id="role-neutro" aria-labelledby="tab-neutro" hidden tabindex="0">
             <h3>Neutro</h3>
             <p class="role-desc">Árbitro/neutral em partidas específicas atribuídas a ele.</p>
             <ul class="role-list">
@@ -396,14 +451,6 @@
               <p><strong>Placar ao vivo:</strong> atualizar placar, período, relógio, incidentes e encerramento.</p>
               <p><strong>Classificação:</strong> tabela por divisão; fechamento de dia do Inter.</p>
               <p>Cartões, punições, WO e pontuação manual pós-jogo (conforme cargo).</p>
-            </div>
-          </details>
-
-          <details class="feature-item">
-            <summary>🏆 Chaveamento (<code>/bracket</code>)</summary>
-            <div class="feature-body">
-              <p>Plano mata-mata com folgas, sorteio interativo e publicação no bot WhatsApp.</p>
-              <p>Disponível para Admin, Mesa Lieu e Criativa.</p>
             </div>
           </details>
 
@@ -493,6 +540,5 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -55,6 +55,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/simulator.js" defer></script>
 
   <script type="application/ld+json">
   {
@@ -81,6 +82,7 @@
       <ul class="nav-links" id="nav-links">
         <li><a href="#inicio">Início</a></li>
         <li><a href="#whatsapp">WhatsApp</a></li>
+        <li><a href="#simulador">Simulador</a></li>
         <li><a href="#painel">Painel</a></li>
         <li><a href="#cargos">Cargos</a></li>
         <li><a href="#funcionalidades">Funcionalidades</a></li>
@@ -163,6 +165,38 @@
 
         <div class="tip-box">
           <strong>Dica:</strong> Use os botões e listas interativas sempre que aparecerem — é a forma mais rápida de navegar.
+        </div>
+
+        <h3 class="subsection-title">Por trás dos panos: como a Chaminha decide o que responder</h3>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <span class="flow-num">1</span>
+            <div>
+              <h4>Você manda uma mensagem</h4>
+              <p>Pode ser um toque em botão/lista, ou texto livre como "placar", "festa" ou "oi" — o bot entende os dois formatos.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">2</span>
+            <div>
+              <h4>A Chaminha identifica o assunto</h4>
+              <p>Ela olha em qual menu você está e o que você escreveu, e decide para qual fluxo te levar (esportes, festas, avisos…).</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">3</span>
+            <div>
+              <h4>Os dados vêm ao vivo do painel</h4>
+              <p>Placar, jogos, festas e avisos são os mesmos que a comissão atualiza no painel — o bot sempre responde com a informação mais recente.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">4</span>
+            <div>
+              <h4>Se travar, chama gente de verdade</h4>
+              <p>No menu Ajuda, a Chaminha tenta responder com a base de conhecimento; se não resolver, o SOS Lieu tira o bot da conversa e chama a equipe.</p>
+            </div>
+          </div>
         </div>
 
         <div class="menu-grid">
@@ -252,8 +286,53 @@
       </div>
     </section>
 
+    <!-- Simulador -->
+    <section id="simulador" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">Teste a Chaminha agora</h2>
+        <p class="section-intro">
+          Simulação simplificada, direto no navegador — nada é enviado pelo WhatsApp de verdade e nenhum dado é salvo.
+          Os jogos, festas e placares abaixo são <strong>exemplos fictícios</strong> só para você entender o fluxo real do bot.
+        </p>
+
+        <div class="botsim">
+          <div class="botsim-phone">
+            <div class="botsim-header">
+              <span class="botsim-avatar" aria-hidden="true">🔥</span>
+              <div class="botsim-header-text">
+                <strong>Chaminha</strong>
+                <small>assistente do Interunesp · simulação</small>
+              </div>
+              <button type="button" class="botsim-reset" id="botsim-reset" title="Recomeçar simulação" aria-label="Recomeçar simulação">↺</button>
+            </div>
+            <div class="botsim-messages" id="botsim-messages" role="log" aria-live="polite" aria-label="Conversa simulada com a Chaminha"></div>
+            <div class="botsim-options" id="botsim-options" aria-label="Opções rápidas"></div>
+            <form class="botsim-inputbar" id="botsim-form">
+              <label for="botsim-input" class="sr-only">Digite uma mensagem para a Chaminha</label>
+              <input type="text" id="botsim-input" placeholder="Digite uma mensagem… (ex.: placar, festa, ajuda)" autocomplete="off" maxlength="200">
+              <button type="submit" aria-label="Enviar mensagem">➤</button>
+            </form>
+          </div>
+
+          <div class="botsim-note">
+            <h3>Como usar o simulador</h3>
+            <p>Clique nas opções que aparecem como se fossem os botões/listas do WhatsApp, ou digite palavras-chave no campo de texto — igual você faria de verdade.</p>
+            <ul class="role-list">
+              <li>Digite <code>placar</code>, <code>festa</code>, <code>alojamento</code> ou <code>ajuda</code> a qualquer momento</li>
+              <li>No menu <strong>Ajuda</strong>, escreva uma pergunta livre para ver a Chaminha responder</li>
+              <li>Peça <strong>atendimento humano</strong> dentro da Ajuda para simular o SOS Lieu</li>
+              <li>Toque em <strong>↺</strong> no topo do chat para recomeçar</li>
+            </ul>
+            <div class="tip-box">
+              <strong>Nota:</strong> aqui as respostas são fixas e locais (não usam IA nem o banco de dados real). No CHAMA de verdade, os dados são ao vivo e a Ajuda pode usar IA opcional sobre a base de conhecimento do evento.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Painel -->
-    <section id="painel" class="section section-alt">
+    <section id="painel" class="section">
       <div class="container">
         <h2 class="section-title">Usando o painel web</h2>
         <p class="section-intro">
@@ -318,7 +397,7 @@
     </section>
 
     <!-- Cargos detalhados -->
-    <section id="cargos" class="section">
+    <section id="cargos" class="section section-alt">
       <div class="container">
         <h2 class="section-title">O que cada cargo pode fazer</h2>
         <p class="section-intro">Clique em um cargo para ver permissões e áreas do painel.</p>
@@ -439,7 +518,7 @@
     </section>
 
     <!-- Funcionalidades -->
-    <section id="funcionalidades" class="section section-alt">
+    <section id="funcionalidades" class="section">
       <div class="container">
         <h2 class="section-title">Funcionalidades principais do painel</h2>
 

@@ -23,24 +23,52 @@
     fastfood: "🍔 *Fast-food perto de você*\n\nBurger's da Praça — 400m"
   };
 
+  // Escolas de alojamento do O'Inter 2026 (a divisão das delegações ainda não saiu)
+  var ALOJAMENTOS = [
+    "E.M. Professora Vilma Gianotti Martinez",
+    "E.M. Professora Ederle Marangoni Dias",
+    "E.M. Deputado Carlos Castilho Cabral",
+    "E.M. José Soares Marcondes"
+  ];
+
   var FAQ = [
+    { test: /pontua|pontos|classificacao geral|quanto vale|campea|vencedor|desempate|\bw\.?o\b/, answer: "Em cada modalidade a colocação final vale pontos na classificação geral: 1º 16, 2º 13, 3º 11, 4º 10, 5º 8, 6º 7, 7º 6, 8º 5, 9º 4, 10º 3, 11º 2, 12º 1. Vence o Inter a atlética com mais pontos; no empate, ganha quem tiver mais 1ºs lugares, depois mais 2ºs, e assim por diante. A atlética que leva W.O. perde 16 pontos (32 no atletismo, na natação e no judô quando a atlética não faz o balizamento ou a pesagem)." },
+    { test: /xadrez|suico/, answer: "O xadrez é misto e disputado em sistema suíço de 5 rodadas (todos contra todos se houver menos de 8 equipes). Cada rodada tem 3 tabuleiros: vitória vale 1 ponto, empate 0,5 e derrota 0. Vence a atlética com mais pontos, em etapa única, em 1 dia." },
+    { test: /mata.?mata|chaveamento|eliminatori|etapa unica|como funciona o (esportivo|campeonato|torneio|competicao)|modelo de disputa/, answer: "O esportivo do O'Inter 2026 tem 13 modalidades, 2 divisões e 3 dias de jogos. As modalidades são disputadas em eliminatória simples (mata-mata), sem empate, com o chaveamento sorteado antes do Inter. Atletismo, natação e xadrez são por pontuação; o xadrez, em sistema suíço de 5 rodadas. No judô as lutas são por categoria de peso, com chave montada no dia, e vence a atlética com mais pontos. Atletismo, natação, judô, xadrez e tênis de mesa têm etapa única, em 1 dia do evento." },
+    { test: /modalidade|quais esportes/, answer: "O O'Inter 2026 tem 13 modalidades, disputadas no feminino e no masculino: atletismo, basquete, futebol de campo, futebol 7 (futebol de 7), futsal, handebol, judô, natação, tênis de campo, tênis de mesa, vôlei, vôlei de praia e xadrez. O xadrez é disputado em equipe mista. Cada divisão disputa 12 delas: futebol de campo só na 1ª divisão e futebol 7 só na 2ª." },
+    { test: /divis|sobe|desce|rebaix|acesso/, answer: "O esportivo do O'Inter 2026 tem 2 divisões. Primeira divisão (10 atléticas): Araraquara, Bauru, Botucatu, Franca, Guaratinguetá, Jaboticabal, Presidente Prudente, Rio Claro, São José do Rio Preto e São Vicente. Segunda divisão (12 atléticas): Araçatuba, Assis, Dracena, Ilha Solteira, Itapeva, Marília, Registro, Rosana, São João da Boa Vista, São José dos Campos, Sorocaba e Tupã. Ao fim do Inter, os 3 primeiros da 2ª divisão sobem e os 3 últimos da 1ª descem." },
+    { test: /(estrutura|banheiro|chuveiro|banho|pia|espelho|colch|barraca|seguranca|limpeza|manutencao|o que tem).*alojamento|alojamento.*(estrutura|banheiro|chuveiro|banho|pia|espelho|colch|barraca|seguranca|limpeza|manutencao)|horarios? de (entrada|saida)/, answer: "Os alojamentos do O'Inter 2026 têm espaços amplos, com áreas cobertas e abertas: salas para colchões e 1 quadra coberta para as barracas. Os banheiros são completos, com cabines, chuveiros, pias e espelhos. Há segurança 24 horas, limpeza diária dos espaços em comum e suporte para manutenção hidráulica e elétrica. Os horários de entrada e saída serão divulgados em breve." },
+    { test: /(onde|quais) (vao ser|serao|sao|vai ser) (os )?alojamentos|escolas? (do|de|dos) alojamento/, answer: "Os alojamentos do O'Inter 2026 serão em 4 escolas municipais de Presidente Prudente: " + ALOJAMENTOS.slice(0, -1).join(", ") + " e " + ALOJAMENTOS[ALOJAMENTOS.length - 1] + ". As delegações serão divididas entre elas. Quando a divisão sair, digite *alojamento* para ver o da sua atlética." },
     { test: /ingresso|passaporte|blacktag|black tag/, answer: "Há 3 opções de ingresso para as festas: Passaporte Completo (acesso às 5 festas e ao open bar do Inter), Passaporte Open Ginásio (3 dias de Open Ginásio no P.U.M.) e ingressos avulsos, em que você escolhe a festa." },
     { test: /lote|virada/, answer: "A virada de lote dos ingressos é no dia 15/10. O Passaporte Open Ginásio se mantém no lote fixo." },
     { test: /open ?bar|bebida|cerveja|vodka/, answer: "O open bar é diferente em cada espaço. Open Ginásio: cerveja, água e coquetel alcoólico. Festas noturnas: cerveja, vodka, energético, água, refrigerante e coquetel alcoólico. São 38 horas de open bar no total." },
     { test: /transporte|onibus|locomocao/, answer: "Cada atlética tem um sistema próprio de transporte dentro da cidade. Para saber como funciona, consulte a sua atlética." },
-    { test: /delegac/, answer: "O O'Inter 2026 tem 23 delegações confirmadas." },
-    { test: /(compr|pag|reserv|link).*alojamento|alojamento.*(compr|pag|reserv|link)/, answer: "Para comprar o alojamento, você pode comprar direto com a sua atlética ou online pelo link da sua atlética na BlackTag." },
-    { test: /quando|data|que dia|dias/, answer: "O O'Inter 2026 acontece de 20 a 22 de novembro, em Presidente Prudente: 3 dias de jogos, 2 festas noturnas (20 e 21/11) e 3 dias de Open Ginásio (20, 21 e 22/11)." },
+    { test: /delegac/, answer: "O O'Inter 2026 tem 22 delegações: 10 atléticas na 1ª divisão e 12 na 2ª." },
+    { test: /(compr|pag|reserv|link|venda).*alojamento|alojamento.*(compr|pag|reserv|link|venda)/, answer: "Para comprar o alojamento, você pode comprar direto com a sua atlética ou online pelo link da sua atlética na BlackTag. As vendas do alojamento começaram em 11 de agosto de 2026." },
+    { test: /quando|data|que dia|dias/, answer: "O O'Inter 2026 acontece de 20 a 22 de novembro, em Presidente Prudente: 3 dias de jogos, 13 modalidades em 2 divisões, 2 festas noturnas (20 e 21/11) e 3 dias de Open Ginásio (20, 21 e 22/11)." },
     { test: /open gin|festa|show|tenda|line ?up|dj|atrac/, answer: "São 2 festas noturnas (20 e 21/11, das 20h às 6h) e 3 dias de Open Ginásio (20, 21 e 22/11, das 12h às 18h, no P.U.M.). Veja a programação completa no menu 🎉 Festas." },
     { test: /jogo|placar|futsal|v[oô]lei|basquete|gin[aá]sio|hor[aá]rio/, answer: "O placar ao vivo e a agenda completa estão no menu ⚽ Esportes — os dados vêm direto do painel, atualizados pelos mesários em tempo real." },
-    { test: /alojamento|hospedagem|onde fico|onde ficar/, answer: "O endereço do seu alojamento e os serviços por perto (marmita, farmácia, hospital) estão no menu 🏠 Alojamentos." },
+    { test: /alojamento|hospedagem|onde fico|onde ficar/, answer: "O endereço do alojamento da sua atlética e os serviços por perto (marmita, farmácia, hospital) aparecem no menu 🏠 Alojamentos assim que a divisão das delegações sair." },
     { test: /atl[eé]tica/, answer: "Você escolhe sua atlética no menu 🏛 Atlética e vê os jogos e desafios do seu campus." },
     { test: /sos|humano|atendente|socorro|pessoa de verdade/, answer: "Se quiser falar com alguém da equipe, toque em \"🆘 Atendimento humano\" aqui na Ajuda." },
     { test: /obrigad|valeu|show de bola/, answer: "De nada! 🔥 Qualquer coisa, estou por aqui." }
   ];
 
   // Mesmos assuntos que o bot real manda direto para a Ajuda, sem abrir o menu
-  var HELP_TOPIC = /ingresso|passaporte|blacktag|black tag|open ?bar|open ?gin|\blotes?\b|virada de lote|transporte|delegac|(compr|pag|reserv|link).*alojamento|alojamento.*(compr|pag|reserv|link)/;
+  // (apps/api/src/bot/help/help-topic.util.ts no projeto principal)
+  var HELP_TOPIC = /ingresso|passaporte|blacktag|black tag|open ?bar|open ?gin|\blotes?\b|virada de lote|transporte|delegac|(compr|pag|reserv|link|vendas?).*alojamento|alojamento.*(compr|pag|reserv|link|vendas?)/;
+  // Alojamento em geral; "meu/minha/nosso" fica no menu Alojamentos
+  var LODGING_TOPIC = /(estrutura|banheiro|chuveiro|banho|\bpias?\b|espelho|colchao|colchoes|barraca|seguranca|limpeza|manutencao).*alojamento|alojamento.*(estrutura|banheiro|chuveiro|banho|\bpias?\b|espelho|colchao|colchoes|barraca|seguranca|limpeza|manutencao)|o que tem n[oa]s? alojamento|horarios? de (entrada|saida|check-?in)|(onde|quais) (vao ser|serao|sao|vai ser) (os )?alojamentos/;
+  var OWN_LODGING = /\b(meu|minha|nosso|nossa)\b/;
+  // Formato do esportivo; classificação, placar e chave ficam no menu Esportes
+  var SPORTS_FORMAT_TOPIC = /\b(quais|quantas) (sao )?(as )?(modalidades|divisoes)\b|como funciona o (esportivo|campeonato|torneio|competicao|chaveamento)|mata.?mata|eliminatoria simples|etapa unica/;
+  var SPORTS_MENU_WORDS = /classifica|ranking|tabela|pontua|placar|resultado|\bjogos?\b|\bchaves?\b|chaveamento d[oa]/;
+
+  function isHelpTopic(normalized) {
+    if (HELP_TOPIC.test(normalized)) return true;
+    if (!OWN_LODGING.test(normalized) && LODGING_TOPIC.test(normalized)) return true;
+    return !SPORTS_MENU_WORDS.test(normalized) && SPORTS_FORMAT_TOPIC.test(normalized);
+  }
 
   function stripAccents(text) {
     return text.normalize ? text.normalize("NFD").replace(/[̀-ͯ]/g, "") : text;
@@ -220,7 +248,7 @@
     },
     sports_standings: {
       message:
-        "📋 *Classificação — 1ª divisão (exemplo)*\n\n1º Atlética Leão — 12 pts\n2º Atlética Tigre — 10 pts\n3º Atlética Fênix — 7 pts\n4º Atlética Coruja — 4 pts",
+        "📋 *Classificação — 1ª divisão (exemplo)*\n\n1º Atlética Leão — 32 pts\n2º Atlética Tigre — 26 pts\n3º Atlética Fênix — 21 pts\n4º Atlética Coruja — 18 pts\n\n_Pontos por colocação em cada modalidade: 1º = 16, 2º = 13, 3º = 11, 4º = 10…_",
       options: sportsOptions
     },
     sports_venues: {
@@ -306,13 +334,17 @@
     );
   }
 
-  // Alojamentos: escolher campus e ver endereço + serviços perto
+  // Alojamentos: escolher campus. Hoje nenhuma atlética tem escola vinculada,
+  // então o bot real lista as escolas; depois da divisão, mostra endereço e serviços.
   function startAlojamentos() {
     respond(
       "🏠 De qual campus você é?",
       CAMPUSES.map(function (name) {
         return { label: name, action: function () { showCampusResult(name); } };
-      }).concat([{ label: "🏠 Menu principal", next: "root" }])
+      }).concat([
+        { label: "👀 Depois da divisão", action: function () { showAssignedExample(CAMPUSES[0]); } },
+        { label: "🏠 Menu principal", next: "root" }
+      ])
     );
   }
 
@@ -326,8 +358,23 @@
     ];
   }
 
-  function showCampusResult(campus) {
-    respond("🏠 *Alojamento — " + campus + "*\n\n📍 Rua das Flores, 123\n\nServiços por perto:", nearbyOptions(campus));
+  function showCampusResult() {
+    respond(
+      "🏠 *Alojamentos do Inter*\n\n" +
+        ALOJAMENTOS.map(function (name) { return "• " + name; }).join("\n") +
+        "\n\nAinda não saiu em qual deles fica a sua atlética. Assim que for divulgado, ele aparece aqui.",
+      [
+        { label: "💬 Ajuda", action: startHelp },
+        { label: "🏠 Menu", next: "root" }
+      ]
+    );
+  }
+
+  function showAssignedExample(campus) {
+    respond(
+      "🏠 *" + ALOJAMENTOS[0] + "*\n_" + campus + "_\n📍 Rua das Flores, 123\n\n_(exemplo fictício de como fica depois da divisão das delegações)_\n\nServiços por perto:",
+      nearbyOptions(campus)
+    );
   }
 
   function showNearby(campus, type) {
@@ -344,7 +391,7 @@
   function startHelp() {
     STATE.mode = "help";
     respond(
-      "💬 *Ajuda*\n\nEscreva sua dúvida sobre o O'Inter — jogos, festas, ingressos, horários…\n\n_Respondo com base na base de conhecimento do evento. Toque em Encerrar quando terminar._",
+      "💬 *Ajuda*\n\nEscreva sua dúvida sobre o O'Inter — jogos, modalidades, festas, ingressos, alojamento, horários…\n\n_Respondo com base na base de conhecimento do evento. Toque em Encerrar quando terminar._",
       helpButtons
     );
   }
@@ -354,7 +401,7 @@
     var match = FAQ.filter(function (item) { return item.test.test(normalized); })[0];
     var answer = match
       ? match.answer
-      : "Essa é uma simulação simplificada 🙂 No CHAMA real, eu respondo com base na base de conhecimento do evento e em dados ao vivo. Tente perguntar sobre jogos, festas, ingresso, open bar ou alojamento!";
+      : "Essa é uma simulação simplificada 🙂 No CHAMA real, eu respondo com base na base de conhecimento do evento e em dados ao vivo. Tente perguntar sobre modalidades, mata-mata, festas, ingresso, open bar ou alojamento!";
     respond(answer, helpButtons);
   }
 
@@ -398,14 +445,14 @@
 
     var normalized = normalize(rawText);
 
-    // Ingresso, open bar, lote, transporte…: vai direto para a Ajuda, antes até da saudação
-    if (HELP_TOPIC.test(normalized)) {
+    // Ingresso, open bar, lote, esportivo, alojamento…: vai direto para a Ajuda, antes até da saudação
+    if (isHelpTopic(normalized)) {
       STATE.mode = "help";
       return answerFaq(rawText);
     }
 
     if (/\b(oi|ola|hey|hi|menu|inicio)\b/.test(normalized)) return goTo("root");
-    if (/jogo|placar|futsal|v[oô]lei|basquete|gin[aá]sio/.test(normalized)) return goTo("sports");
+    if (/jogo|placar|classifica|ranking|futsal|v[oô]lei|basquete|gin[aá]sio/.test(normalized)) return goTo("sports");
     if (/tenda|festa|show|lineup|line-up|dj|headliner/.test(normalized)) return goTo("festas");
     if (/atletica/.test(normalized)) return startAtletica();
     if (/alojamento|hospedagem|onde ficar|onde fico/.test(normalized)) return startAlojamentos();

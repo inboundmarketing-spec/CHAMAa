@@ -11,8 +11,8 @@ Este repositório contém apenas a documentação de uso — **sem instruções 
 ## Conteúdo do guia
 
 - O que é o CHAMA e quem usa cada parte
-- **WhatsApp:** menus, comandos e fluxos (esportes, festas e Open Ginásio, avisos, ajuda, SOS Lieu…), atalhos de texto (`ingresso`, `open bar`, `lote`, `transporte`…) e exemplos de perguntas sobre o O'Inter 2026
-- **Simulador:** chat de treino no navegador, que espelha os menus do bot (inclui a programação das festas e as respostas sobre ingresso, open bar, lote, alojamento e transporte)
+- **WhatsApp:** menus, comandos e fluxos (esportes, festas e Open Ginásio, avisos, ajuda, SOS Lieu…), atalhos de texto (`ingresso`, `open bar`, `lote`, `transporte`, `quais são as modalidades?`, `o que tem no alojamento?`…) e exemplos de perguntas sobre o O'Inter 2026 (festas, esportivo e alojamento)
+- **Simulador:** chat de treino no navegador, que espelha os menus do bot (inclui a programação das festas, as respostas sobre ingresso, open bar, lote, transporte, modalidades, mata-mata, divisões, pontuação e alojamento, e a lista das 4 escolas de alojamento no menu Alojamentos)
 - **Painel web:** login, botão de ajuda, hierarquia de cargos e permissões por função
 - **Funcionalidades:** esportes, festas (programações com início e término), campanhas, Instagram, locais, base de conhecimento e respostas salvas, simulador
 
@@ -21,7 +21,7 @@ Este repositório contém apenas a documentação de uso — **sem instruções 
 Este guia ensina a **usar** a plataforma. Os dados do evento (datas, programação, ingressos) ficam cadastrados no painel e na base de conhecimento do bot, e o guia só dá exemplos deles. Quando algo mudar:
 
 - **Textos do guia:** edite `index.html`.
-- **Respostas do simulador** (`assets/js/simulator.js`): ficam fixas no navegador e **não** leem o bot real. Atualize `PROGRAMS` e `FAQ` quando a programação, o open bar ou os ingressos mudarem, para o treino continuar fiel.
+- **Respostas do simulador** (`assets/js/simulator.js`): ficam fixas no navegador e **não** leem o bot real. Atualize `PROGRAMS`, `ALOJAMENTOS` e `FAQ` quando a programação, o open bar, os ingressos, o esportivo ou os alojamentos mudarem, para o treino continuar fiel. Os atalhos que vão direto para a Ajuda (`isHelpTopic`) copiam `apps/api/src/bot/help/help-topic.util.ts` do projeto principal; se ele mudar, mude aqui também. Quando sair a divisão das delegações entre as escolas, `showCampusResult` deve passar a mostrar o endereço, como o bot real.
 - **Dados do bot:** no painel (`/events`, `/knowledge`); veja `docs/dados-o-inter-2026.md` no projeto principal.
 
 
